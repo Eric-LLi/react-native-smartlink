@@ -15,10 +15,20 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiConfiguration;
 
+import com.hiflying.smartlink.ISmartLinker;
 import com.hiflying.smartlink.OnSmartLinkListener;
 import com.hiflying.smartlink.SmartLinkedModule;
 import com.hiflying.smartlink.v3.SnifferSmartLinker;
 import com.hiflying.smartlink.v7.MulticastSmartLinker;
+
+import android.content.Context;
+
+class FailureCodes {
+	static int SYSTEM_ADDED_CONFIG_EXISTS = 1;
+	static int FAILED_TO_CONNECT = 2;
+	static int FAILED_TO_ADD_CONFIG = 3;
+	static int FAILED_TO_BIND_CONFIG = 4;
+}
 
 public class SmartlinkModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -29,6 +39,14 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 	public SmartlinkModule(ReactApplicationContext reactContext) {
 		super(reactContext);
 		this.reactContext = reactContext;
+		wifiManager = (WifiManager) getReactApplicationContext().getApplicationContext()
+				.getSystemService(Context.WIFI_SERVICE);
+		connectivityManager = (ConnectivityManager) getReactApplicationContext().getApplicationContext()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+	}
+
+	private String errorFromCode(int errorCode) {
+		return "ErrorCode: " + errorCode;
 	}
 
 	@Override

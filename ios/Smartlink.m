@@ -56,7 +56,6 @@ RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
     });
 }
 
-
 RCT_EXPORT_METHOD(SL_StopConnect:
                   (RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -151,6 +150,5 @@ RCT_REMAP_METHOD(Get_SSID,
 
     reject(@"Error",@"Cannot detect SSID", nil);
 }
-
 
 @end
