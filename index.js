@@ -10,8 +10,6 @@ const { Smartlink } = NativeModules;
 
 //isAvailableConnectWiFi()
 
-//Connect_WiFi(ssid)
-
 //Get_SSID()
 
 //Connect_WiFi_Secure(ssid, pwd, bindNetwork, isWEP)
