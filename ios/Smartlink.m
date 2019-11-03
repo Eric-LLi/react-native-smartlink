@@ -143,7 +143,7 @@ RCT_REMAP_METHOD(Get_SSID,
         NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
         NSString *ssid = info[kSSID];
         if (ssid) {
-            resolve(@[ssid]);
+            resolve(ssid);
             return;
         }
     }
