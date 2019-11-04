@@ -1,10 +1,14 @@
 #import "Smartlink.h"
 #import "HFSmartLink.h"
-#import "HFSmartLinkDeviceInfo.h"
+#import "Model/HFSmartLinkDeviceInfo.h"
 #import <NetworkExtension/NetworkExtension.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <net/if.h>
 #import <ifaddrs.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+#import "WenControl/LWControlHeader.h"
+#import "LWHttp/HttpRequest.h"
+#import "Model/Udpproxy.h"
 
 @implementation Smartlink
 
@@ -13,13 +17,17 @@ BOOL v3xSupport= false;
 static NSString *apSSID;
 static NSString *currentSSID;
 static NSString *currentPwd;
-NSString * const WIFI_DISCONNECTED_MSG = @"Please enable Wifi and connect to your router.";
-NSString * const TRY_AGAIN_MSG = @"Please try again...";
-NSString * const NOT_SUPPORTED_MSG = @"Not supported in iOS<11.0";
-NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID";
-NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * userStr= @"";
 static HFSmartLink * smtlk;
+
+NSString * const WIFI_DISCONNECTED_MSG = @"Please enable WiFi and connect to your router...";
+NSString * const TRY_AGAIN_MSG = @"Please try again...";
+NSString * const NOT_SUPPORTED_MSG = @"Not supported in iOS<11.0...";
+NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
+NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
+NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
+
+
 
 RCT_EXPORT_MODULE()
 
@@ -35,8 +43,25 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
         if (@available(iOS 11.0, *)) {
             NSString * current = [self get_ssid];
             if(current == apSSID){
-                currentSSID = ssid;
-                currentPwd = pwd;
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [HttpRequest connectModuleWithWiFiPwd:pwd withNetSSID:ssid withSSID:apSSID didLoadData:^(NSDictionary *result, NSError *err) {
+                        if (!err) {
+                            NSInteger suc = [result[@"RC"] integerValue];
+                            if (suc == 0) {
+                                //Success
+                                //Save router ssid and pwd
+                                currentSSID = ssid;
+                                currentPwd = pwd;
+                                resolve(@YES);
+                            }else{
+                                //Fail
+                                reject(@"Error", FAIL_SEND_CONFIG_MSG, nil);
+                            }
+                        }else{
+                            reject(@"Error", FAIL_SEND_CONFIG_MSG, nil);
+                        }
+                    }];
+                });
             } else {
                 reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
             }

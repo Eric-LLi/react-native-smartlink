@@ -142,8 +142,10 @@
 /* Begin PBXFileReference section */
 		0763A8C1236B0AD000DF905F /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = "<group>"; };
-		0763A8F6236B0B1400DF905F /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
+		07FEBF5E236FD50F004B9919 /* WenControl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WenControl; sourceTree = "<group>"; };
+		07FEBF5F236FD50F004B9919 /* LWHttp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LWHttp; sourceTree = "<group>"; };
+		07FEBF60236FD776004B9919 /* Model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Model; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libSmartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSmartlink.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* Smartlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smartlink.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Smartlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Smartlink.m; sourceTree = "<group>"; };
@@ -204,8 +206,10 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				07FEBF60236FD776004B9919 /* Model */,
+				07FEBF5F236FD50F004B9919 /* LWHttp */,
+				07FEBF5E236FD50F004B9919 /* WenControl */,
 				0763A8F5236B0B1400DF905F /* HFSmartLink.h */,
-				0763A8F6236B0B1400DF905F /* HFSmartLinkDeviceInfo.h */,
 				0763A8C1236B0AD000DF905F /* React.xcodeproj */,
 				B3E7B5881CC2AC0600A0062D /* Smartlink.h */,
 				B3E7B5891CC2AC0600A0062D /* Smartlink.m */,

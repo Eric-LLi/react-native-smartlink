@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HFSmartLinkDeviceInfo.h"
+#import "Model/HFSmartLinkDeviceInfo.h"
 
 typedef void(^SmartLinkProcessBlock)(NSInteger process);
 /**
