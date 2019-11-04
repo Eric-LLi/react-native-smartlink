@@ -27,8 +27,6 @@ NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
 NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
 
-
-
 RCT_EXPORT_MODULE()
 
 - (dispatch_queue_t)methodQueue
@@ -42,7 +40,7 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
     if([self isWiFiEnabled]){
         if (@available(iOS 11.0, *)) {
             NSString * current = [self get_ssid];
-            if(current == apSSID){
+            if([apSSID containsString:current]){
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [HttpRequest connectModuleWithWiFiPwd:pwd withNetSSID:ssid withSSID:apSSID didLoadData:^(NSDictionary *result, NSError *err) {
                         if (!err) {
