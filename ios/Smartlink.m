@@ -3,22 +3,49 @@
 #import "HFSmartLinkDeviceInfo.h"
 #import <NetworkExtension/NetworkExtension.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import <net/if.h>
+#import <ifaddrs.h>
 
 @implementation Smartlink
 
-static BOOL isconnecting = false;
+static BOOL isConnecting = false;
 BOOL v3xSupport= false;
+static NSString *apSSID;
 static NSString *currentSSID;
 static NSString *currentPwd;
-
+NSString * const WIFI_DISCONNECTED_MSG = @"Please enable Wifi and connect to your router.";
+NSString * const TRY_AGAIN_MSG = @"Please try again...";
+NSString * const NOT_SUPPORTED_MSG = @"Not supported in iOS<11.0";
+NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID";
+NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * userStr= @"";
-HFSmartLink * smtlk;
+static HFSmartLink * smtlk;
 
 RCT_EXPORT_MODULE()
 
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_queue_create("com.facebook.React.AsyncLocalStorageQueue", DISPATCH_QUEUE_SERIAL);
+}
+
+RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
+                  connectResolver:(RCTPromiseResolveBlock)resolve
+                  connectRejecter:(RCTPromiseRejectBlock)reject){
+    if([self isWiFiEnabled]){
+        if (@available(iOS 11.0, *)) {
+            NSString * current = [self get_ssid];
+            if(current == apSSID){
+                currentSSID = ssid;
+                currentPwd = pwd;
+            } else {
+                reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
+            }
+        } else {
+            reject(@"Error", NOT_SUPPORTED_MSG, nil);
+        }
+    }else{
+        reject(@"Error", WIFI_DISCONNECTED_MSG, nil);
+    }
 }
 
 RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
@@ -31,8 +58,8 @@ RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Call long-running code on background thread
-        if(!isconnecting){
-            isconnecting = true;
+        if(!isConnecting){
+            isConnecting = true;
             [smtlk startWithSSID:ssid Key:pwd UserStr:userStr withV3x:v3xSupport processblock: ^(NSInteger pro) {
             } successBlock:^(HFSmartLinkDeviceInfo *dev) {
                 NSDictionary * device = @{
@@ -43,14 +70,14 @@ RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
             } failBlock:^(NSString *failmsg) {
                 reject(@"error", failmsg, nil);
             } endBlock:^(NSDictionary *deviceDic) {
-                isconnecting  = false;
+                isConnecting  = false;
             }
              ];
         } else {
             [smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
                 if(isOk){
-                    isconnecting  = false;
-                    reject(@"error", @"Please try again...", nil);
+                    isConnecting  = false;
+                    reject(@"error", TRY_AGAIN_MSG, nil);
                 }else{
                     reject(@"error", stopMsg, nil);
                 }
@@ -63,17 +90,17 @@ RCT_EXPORT_METHOD(SL_StopConnect:
                   (RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if(smtlk != nil && isconnecting){
+    if(smtlk != nil && isConnecting){
         [smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
             if(isOk){
-                isconnecting  = false;
-                resolve(@"");
+                isConnecting  = false;
+                resolve(@YES);
             }else{
-                reject(@"", stopMsg, nil);
+                reject(@"Error", stopMsg, nil);
             }
         }];
     } else {
-        resolve(@"");
+        resolve(@YES);
     }
 }
 
@@ -84,7 +111,7 @@ RCT_EXPORT_METHOD(isAvailableConnectWiFi:
     if (@available(iOS 11.0, *)) {
         available = @YES;
     }
-    resolve(@[available]);
+    resolve(available);
 }
 
 RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
@@ -93,24 +120,28 @@ RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
     if (@available(iOS 11.0, *)) {
-        currentSSID = ssid;
-        currentPwd = passphrase;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid passphrase:passphrase isWEP:false];
-            configuration.joinOnce = true;
-            
-            [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
-                if (error != nil) {
-                    NSString * msg =[error localizedDescription];
-                    NSLog(@"%@",msg);
-                    reject(@"Error", msg, nil);
-                } else {
-                    resolve(@"Done");
-                }
-            }];
-        });
+        if([self isWiFiEnabled]){
+            currentSSID = ssid;
+            currentPwd = passphrase;
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid passphrase:passphrase isWEP:false];
+                configuration.joinOnce = true;
+                
+                [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
+                    if (error != nil) {
+                        NSString * msg =[error localizedDescription];
+                        NSLog(@"%@",msg);
+                        reject(@"Error", msg, nil);
+                    } else {
+                        resolve(@YES);
+                    }
+                }];
+            });
+        }else{
+            reject(@"Error", WIFI_DISCONNECTED_MSG, nil);
+        }
     } else {
-        reject(@"Error", @"Not supported in iOS<11.0", nil);
+        reject(@"Error", NOT_SUPPORTED_MSG, nil);
     }
 }
 
@@ -119,6 +150,7 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
     if (@available(iOS 11.0, *)) { dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        apSSID = ssid;
         NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
         configuration.joinOnce = true;
         
@@ -128,12 +160,12 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
                 NSLog(@"%@",msg);
                 reject(@"Error", msg, nil);
             } else {
-                resolve(@"Done");
+                resolve(@YES);
             }
         }];
     });
     } else {
-        reject(@"Error", @"Not supported in iOS<11.0", nil);
+        reject(@"Error", NOT_SUPPORTED_MSG, nil);
     }
 }
 
@@ -145,7 +177,7 @@ RCT_REMAP_METHOD(Get_SSID,
     if(ssid != nil){
         resolve(ssid);
     }else{
-        reject(@"Error",@"Cannot detect SSID", nil);
+        reject(@"Error",NOT_DETECTED_SSID_MSG, nil);
     }
 }
 
@@ -163,6 +195,19 @@ RCT_REMAP_METHOD(Get_SSID,
     }
     
     return ssid;
+}
+
+- (BOOL) isWiFiEnabled {
+    NSCountedSet * cset = [[NSCountedSet alloc] init];
+    struct ifaddrs *interfaces;
+    if( ! getifaddrs(&interfaces) ) {
+        for( struct ifaddrs *interface = interfaces; interface; interface = interface->ifa_next) {
+            if ( (interface->ifa_flags & IFF_UP) == IFF_UP ) {
+                [cset addObject:[NSString stringWithUTF8String:interface->ifa_name]];
+            }
+        }
+    }
+    return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
 }
 
 @end
