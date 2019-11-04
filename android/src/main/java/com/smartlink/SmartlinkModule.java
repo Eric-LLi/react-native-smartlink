@@ -23,6 +23,7 @@ import com.hiflying.smartlink.SmartLinkedModule;
 import com.hiflying.smartlink.v7.MulticastSmartLinker;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 class FailureCodes {
@@ -259,31 +260,40 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 
 	@ReactMethod
 	public void Connect_WiFi(final String ssid, final Promise promise) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					connect_wifi_secure(ssid, "");
-					promise.resolve(true);
-				} catch (Exception err) {
-					promise.reject(null, err.getMessage());
+		if (Build.VERSION.SDK_INT > 28) {
+			promise.reject(null, "Not supported on Android Q");
+		} else {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						connect_wifi_secure(ssid, "");
+						promise.resolve(true);
+					} catch (Exception err) {
+						promise.reject(null, err.getMessage());
+					}
 				}
-			}
-		});
+			}).start();
+		}
 	}
 
 	@ReactMethod
 	public void Connect_WiFi_Secure(final String ssid, final String passphrase, final Promise promise) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					connect_wifi_secure(ssid, passphrase);
-					promise.resolve(true);
-				} catch (Exception err) {
-					promise.reject(null, err.getMessage());
+		if (Build.VERSION.SDK_INT > 28) {
+			promise.reject(null, "Not supported on Android Q");
+		} else {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						connect_wifi_secure(ssid, passphrase);
+						promise.resolve(true);
+					} catch (Exception err) {
+						promise.reject(null, err.getMessage());
+					}
 				}
-			}
-		}).start();
+			}).start();
+		}
+
 	}
 }
