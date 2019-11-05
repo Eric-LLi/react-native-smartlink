@@ -1,14 +1,13 @@
 #import "Smartlink.h"
 #import "HFSmartLink.h"
-#import "Model/HFSmartLinkDeviceInfo.h"
+#import "HFSmartLinkDeviceInfo.h"
 #import <NetworkExtension/NetworkExtension.h>
-#import <SystemConfiguration/CaptiveNetwork.h>
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import "WenControl/LWControlHeader.h"
-#import "LWHttp/HttpRequest.h"
-#import "Model/Udpproxy.h"
+//#import "LWControlHeader.h"
+#import "HttpRequest.h"
+//#import "Udpproxy.h"
 
 @implementation Smartlink
 
@@ -42,6 +41,7 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
             NSString * current = [self get_ssid];
             if([apSSID containsString:current]){
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
                     [HttpRequest connectModuleWithWiFiPwd:pwd withNetSSID:ssid withSSID:apSSID didLoadData:^(NSDictionary *result, NSError *err) {
                         if (!err) {
                             NSInteger suc = [result[@"RC"] integerValue];

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8D5236B0AD100DF905F /* libReact.a */; };
 		0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
+		07A1315F2370084D0017E657 /* HFSmartLink.h in Sources */ = {isa = PBXBuildFile; fileRef = 0763A8F5236B0B1400DF905F /* HFSmartLink.h */; };
+		07A1316323700A330017E657 /* libsmartlinklib_v7.a in Sources */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
 /* End PBXBuildFile section */
 
@@ -143,9 +145,14 @@
 		0763A8C1236B0AD000DF905F /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = "<group>"; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
-		07FEBF5E236FD50F004B9919 /* WenControl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WenControl; sourceTree = "<group>"; };
-		07FEBF5F236FD50F004B9919 /* LWHttp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LWHttp; sourceTree = "<group>"; };
-		07FEBF60236FD776004B9919 /* Model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Model; sourceTree = "<group>"; };
+		0798D225237043A300A91216 /* Udpproxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Udpproxy.h; sourceTree = "<group>"; };
+		0798D226237043A300A91216 /* HFSmartLinkDeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HFSmartLinkDeviceInfo.m; sourceTree = "<group>"; };
+		0798D227237043A300A91216 /* Udpproxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Udpproxy.m; sourceTree = "<group>"; };
+		0798D228237043A300A91216 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
+		0798D22A237043AF00A91216 /* HttpRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
+		0798D22B237043AF00A91216 /* LWBasicNetWorkTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LWBasicNetWorkTools.m; sourceTree = "<group>"; };
+		0798D22C237043AF00A91216 /* LWBasicNetWorkTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWBasicNetWorkTools.h; sourceTree = "<group>"; };
+		0798D22D237043AF00A91216 /* HttpRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libSmartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSmartlink.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* Smartlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smartlink.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Smartlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Smartlink.m; sourceTree = "<group>"; };
@@ -195,6 +202,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0798D224237043A300A91216 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0798D225237043A300A91216 /* Udpproxy.h */,
+				0798D226237043A300A91216 /* HFSmartLinkDeviceInfo.m */,
+				0798D227237043A300A91216 /* Udpproxy.m */,
+				0798D228237043A300A91216 /* HFSmartLinkDeviceInfo.h */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0798D229237043AF00A91216 /* LWHttp */ = {
+			isa = PBXGroup;
+			children = (
+				0798D22A237043AF00A91216 /* HttpRequest.m */,
+				0798D22B237043AF00A91216 /* LWBasicNetWorkTools.m */,
+				0798D22C237043AF00A91216 /* LWBasicNetWorkTools.h */,
+				0798D22D237043AF00A91216 /* HttpRequest.h */,
+			);
+			path = LWHttp;
+			sourceTree = SOURCE_ROOT;
+		};
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,9 +235,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				07FEBF60236FD776004B9919 /* Model */,
-				07FEBF5F236FD50F004B9919 /* LWHttp */,
-				07FEBF5E236FD50F004B9919 /* WenControl */,
+				0798D229237043AF00A91216 /* LWHttp */,
+				0798D224237043A300A91216 /* Model */,
 				0763A8F5236B0B1400DF905F /* HFSmartLink.h */,
 				0763A8C1236B0AD000DF905F /* React.xcodeproj */,
 				B3E7B5881CC2AC0600A0062D /* Smartlink.h */,
@@ -396,6 +424,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07A1316323700A330017E657 /* libsmartlinklib_v7.a in Sources */,
+				07A1315F2370084D0017E657 /* HFSmartLink.h in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

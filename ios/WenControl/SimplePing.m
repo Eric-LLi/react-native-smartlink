@@ -135,8 +135,8 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
     assert(self->_host == NULL);
     assert(self->_socket == NULL);
     
-    [self->_hostName release];
-    [self->_hostAddress release];
+//    [self->_hostName release];
+//    [self->_hostAddress release];
 
     [super dealloc];
 }
