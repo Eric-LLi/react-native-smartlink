@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8D5236B0AD100DF905F /* libReact.a */; };
 		0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
-		07A1315F2370084D0017E657 /* HFSmartLink.h in Sources */ = {isa = PBXBuildFile; fileRef = 0763A8F5236B0B1400DF905F /* HFSmartLink.h */; };
-		07A1316323700A330017E657 /* libsmartlinklib_v7.a in Sources */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
+		07CD4D48237290060060C9C7 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D44237290060060C9C7 /* HttpRequest.m */; };
+		07CD4D49237290060060C9C7 /* LWBasicNetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D46237290060060C9C7 /* LWBasicNetWorkTools.m */; };
+		07CD4D4E2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4A2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m */; };
+		07CD4D4F2372900F0060C9C7 /* Udpproxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4D2372900F0060C9C7 /* Udpproxy.m */; };
+		24780860CCED2911D8AE697F /* libPods-Smartlink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66174C32C68B8C15C2F5DF95 /* libPods-Smartlink.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
 /* End PBXBuildFile section */
 
@@ -143,19 +146,62 @@
 
 /* Begin PBXFileReference section */
 		0763A8C1236B0AD000DF905F /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = "<group>"; };
+		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = SOURCE_ROOT; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
-		0798D225237043A300A91216 /* Udpproxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Udpproxy.h; sourceTree = "<group>"; };
-		0798D226237043A300A91216 /* HFSmartLinkDeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HFSmartLinkDeviceInfo.m; sourceTree = "<group>"; };
-		0798D227237043A300A91216 /* Udpproxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Udpproxy.m; sourceTree = "<group>"; };
-		0798D228237043A300A91216 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
-		0798D22A237043AF00A91216 /* HttpRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
-		0798D22B237043AF00A91216 /* LWBasicNetWorkTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LWBasicNetWorkTools.m; sourceTree = "<group>"; };
-		0798D22C237043AF00A91216 /* LWBasicNetWorkTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWBasicNetWorkTools.h; sourceTree = "<group>"; };
-		0798D22D237043AF00A91216 /* HttpRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
+		07CD4D44237290060060C9C7 /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpRequest.m; path = LWHttp/HttpRequest.m; sourceTree = "<group>"; };
+		07CD4D45237290060060C9C7 /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HttpRequest.h; path = LWHttp/HttpRequest.h; sourceTree = "<group>"; };
+		07CD4D46237290060060C9C7 /* LWBasicNetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LWBasicNetWorkTools.m; path = LWHttp/LWBasicNetWorkTools.m; sourceTree = "<group>"; };
+		07CD4D47237290060060C9C7 /* LWBasicNetWorkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LWBasicNetWorkTools.h; path = LWHttp/LWBasicNetWorkTools.h; sourceTree = "<group>"; };
+		07CD4D4A2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HFSmartLinkDeviceInfo.m; path = Model/HFSmartLinkDeviceInfo.m; sourceTree = "<group>"; };
+		07CD4D4B2372900F0060C9C7 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HFSmartLinkDeviceInfo.h; path = Model/HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
+		07CD4D4C2372900F0060C9C7 /* Udpproxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Udpproxy.h; path = Model/Udpproxy.h; sourceTree = "<group>"; };
+		07CD4D4D2372900F0060C9C7 /* Udpproxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Udpproxy.m; path = Model/Udpproxy.m; sourceTree = "<group>"; };
+		07F195AF23728DC5008820B1 /* SimplePingHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimplePingHelper.h; sourceTree = "<group>"; };
+		07F195B023728DC5008820B1 /* SimplePing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
+		07F195B223728DC5008820B1 /* NSDictionary+LWExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+LWExtension.h"; sourceTree = "<group>"; };
+		07F195B323728DC5008820B1 /* UIButton+LWUnderlineButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+LWUnderlineButton.h"; sourceTree = "<group>"; };
+		07F195B423728DC5008820B1 /* UIView+LWFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LWFrame.h"; sourceTree = "<group>"; };
+		07F195B523728DC5008820B1 /* UIImageView+LWColorAtPixel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+LWColorAtPixel.m"; sourceTree = "<group>"; };
+		07F195B623728DC5008820B1 /* UIView+LWQuickControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LWQuickControl.h"; sourceTree = "<group>"; };
+		07F195B723728DC5008820B1 /* NSData+LWData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+LWData.h"; sourceTree = "<group>"; };
+		07F195B823728DC5008820B1 /* UIButton+LWUnderlineButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+LWUnderlineButton.m"; sourceTree = "<group>"; };
+		07F195B923728DC5008820B1 /* NSDictionary+LWExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+LWExtension.m"; sourceTree = "<group>"; };
+		07F195BA23728DC5008820B1 /* UIImageView+LWColorAtPixel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+LWColorAtPixel.h"; sourceTree = "<group>"; };
+		07F195BB23728DC5008820B1 /* UIView+LWFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LWFrame.m"; sourceTree = "<group>"; };
+		07F195BC23728DC5008820B1 /* NSData+LWData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+LWData.m"; sourceTree = "<group>"; };
+		07F195BE23728DC5008820B1 /* UIView+LWQuickControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LWQuickControl.m"; sourceTree = "<group>"; };
+		07F195C023728DC5008820B1 /* Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		07F195C223728DC5008820B1 /* NSString+Hash.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
+		07F195C323728DC5008820B1 /* NSString+Hash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
+		07F195C423728DC5008820B1 /* CocoaSecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CocoaSecurity.h; sourceTree = "<group>"; };
+		07F195C623728DC5008820B1 /* RSA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
+		07F195C723728DC5008820B1 /* RSA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
+		07F195C823728DC5008820B1 /* Base64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		07F195CA23728DC5008820B1 /* NSString+Encryption.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Encryption.m"; sourceTree = "<group>"; };
+		07F195CB23728DC5008820B1 /* NSString+Encryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Encryption.h"; sourceTree = "<group>"; };
+		07F195CC23728DC5008820B1 /* CocoaSecurity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CocoaSecurity.m; sourceTree = "<group>"; };
+		07F195CD23728DC5008820B1 /* ScanLAN.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanLAN.m; sourceTree = "<group>"; };
+		07F195CE23728DC5008820B1 /* LWMacroDefinition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWMacroDefinition.h; sourceTree = "<group>"; };
+		07F195CF23728DC5008820B1 /* LWNSHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWNSHelper.h; sourceTree = "<group>"; };
+		07F195D023728DC5008820B1 /* SimplePingHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimplePingHelper.m; sourceTree = "<group>"; };
+		07F195D123728DC5008820B1 /* ScanLAN.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanLAN.h; sourceTree = "<group>"; };
+		07F195D323728DC5008820B1 /* LWButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LWButton.m; sourceTree = "<group>"; };
+		07F195D423728DC5008820B1 /* LWButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWButton.h; sourceTree = "<group>"; };
+		07F195D523728DC5008820B1 /* SimplePing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
+		07F195D723728DC5008820B1 /* HHLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHLogFormatter.m; sourceTree = "<group>"; };
+		07F195D823728DC5008820B1 /* LDLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LDLog.m; sourceTree = "<group>"; };
+		07F195D923728DC5008820B1 /* HHLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHLogFormatter.h; sourceTree = "<group>"; };
+		07F195DA23728DC5008820B1 /* LDLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LDLog.h; sourceTree = "<group>"; };
+		07F195DB23728DC5008820B1 /* LWControlHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LWControlHeader.h; sourceTree = "<group>"; };
+		07F195DD23728DC5008820B1 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
+		07F195DE23728DC5008820B1 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
+		07F195DF23728DC5008820B1 /* LWNSHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LWNSHelper.m; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libSmartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSmartlink.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5881CC2AC0600A0062D /* Smartlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smartlink.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* Smartlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Smartlink.m; sourceTree = "<group>"; };
+		393A9E69746D2CC38EFE543B /* Pods-Smartlink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smartlink.release.xcconfig"; path = "Target Support Files/Pods-Smartlink/Pods-Smartlink.release.xcconfig"; sourceTree = "<group>"; };
+		4958243A93F91E4B774D0276 /* Pods-Smartlink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smartlink.debug.xcconfig"; path = "Target Support Files/Pods-Smartlink/Pods-Smartlink.debug.xcconfig"; sourceTree = "<group>"; };
+		66174C32C68B8C15C2F5DF95 /* libPods-Smartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smartlink.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3E7B5881CC2AC0600A0062D /* Smartlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smartlink.h; sourceTree = SOURCE_ROOT; };
+		B3E7B5891CC2AC0600A0062D /* Smartlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Smartlink.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +211,7 @@
 			files = (
 				0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */,
 				0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */,
+				24780860CCED2911D8AE697F /* libPods-Smartlink.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */,
+				66174C32C68B8C15C2F5DF95 /* libPods-Smartlink.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -202,27 +250,146 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0798D224237043A300A91216 /* Model */ = {
+		07F195AE23728DC5008820B1 /* WenControl */ = {
 			isa = PBXGroup;
 			children = (
-				0798D225237043A300A91216 /* Udpproxy.h */,
-				0798D226237043A300A91216 /* HFSmartLinkDeviceInfo.m */,
-				0798D227237043A300A91216 /* Udpproxy.m */,
-				0798D228237043A300A91216 /* HFSmartLinkDeviceInfo.h */,
+				07F195AF23728DC5008820B1 /* SimplePingHelper.h */,
+				07F195B023728DC5008820B1 /* SimplePing.h */,
+				07F195B123728DC5008820B1 /* category */,
+				07F195BF23728DC5008820B1 /* Encryptions */,
+				07F195CD23728DC5008820B1 /* ScanLAN.m */,
+				07F195CE23728DC5008820B1 /* LWMacroDefinition.h */,
+				07F195CF23728DC5008820B1 /* LWNSHelper.h */,
+				07F195D023728DC5008820B1 /* SimplePingHelper.m */,
+				07F195D123728DC5008820B1 /* ScanLAN.h */,
+				07F195D223728DC5008820B1 /* view */,
+				07F195D523728DC5008820B1 /* SimplePing.m */,
+				07F195D623728DC5008820B1 /* Log */,
+				07F195DB23728DC5008820B1 /* LWControlHeader.h */,
+				07F195DC23728DC5008820B1 /* Socket */,
+				07F195DF23728DC5008820B1 /* LWNSHelper.m */,
 			);
-			path = Model;
+			path = WenControl;
+			sourceTree = SOURCE_ROOT;
+		};
+		07F195B123728DC5008820B1 /* category */ = {
+			isa = PBXGroup;
+			children = (
+				07F195B223728DC5008820B1 /* NSDictionary+LWExtension.h */,
+				07F195B323728DC5008820B1 /* UIButton+LWUnderlineButton.h */,
+				07F195B423728DC5008820B1 /* UIView+LWFrame.h */,
+				07F195B523728DC5008820B1 /* UIImageView+LWColorAtPixel.m */,
+				07F195B623728DC5008820B1 /* UIView+LWQuickControl.h */,
+				07F195B723728DC5008820B1 /* NSData+LWData.h */,
+				07F195B823728DC5008820B1 /* UIButton+LWUnderlineButton.m */,
+				07F195B923728DC5008820B1 /* NSDictionary+LWExtension.m */,
+				07F195BA23728DC5008820B1 /* UIImageView+LWColorAtPixel.h */,
+				07F195BB23728DC5008820B1 /* UIView+LWFrame.m */,
+				07F195BC23728DC5008820B1 /* NSData+LWData.m */,
+				07F195BD23728DC5008820B1 /* GTM */,
+				07F195BE23728DC5008820B1 /* UIView+LWQuickControl.m */,
+			);
+			path = category;
 			sourceTree = "<group>";
 		};
-		0798D229237043AF00A91216 /* LWHttp */ = {
+		07F195BD23728DC5008820B1 /* GTM */ = {
 			isa = PBXGroup;
 			children = (
-				0798D22A237043AF00A91216 /* HttpRequest.m */,
-				0798D22B237043AF00A91216 /* LWBasicNetWorkTools.m */,
-				0798D22C237043AF00A91216 /* LWBasicNetWorkTools.h */,
-				0798D22D237043AF00A91216 /* HttpRequest.h */,
 			);
-			path = LWHttp;
-			sourceTree = SOURCE_ROOT;
+			path = GTM;
+			sourceTree = "<group>";
+		};
+		07F195BF23728DC5008820B1 /* Encryptions */ = {
+			isa = PBXGroup;
+			children = (
+				07F195C023728DC5008820B1 /* Base64.h */,
+				07F195C123728DC5008820B1 /* Hash */,
+				07F195C423728DC5008820B1 /* CocoaSecurity.h */,
+				07F195C523728DC5008820B1 /* RSAEncrypt */,
+				07F195C823728DC5008820B1 /* Base64.m */,
+				07F195C923728DC5008820B1 /* NSString+Encryption */,
+				07F195CC23728DC5008820B1 /* CocoaSecurity.m */,
+			);
+			path = Encryptions;
+			sourceTree = "<group>";
+		};
+		07F195C123728DC5008820B1 /* Hash */ = {
+			isa = PBXGroup;
+			children = (
+				07F195C223728DC5008820B1 /* NSString+Hash.m */,
+				07F195C323728DC5008820B1 /* NSString+Hash.h */,
+			);
+			path = Hash;
+			sourceTree = "<group>";
+		};
+		07F195C523728DC5008820B1 /* RSAEncrypt */ = {
+			isa = PBXGroup;
+			children = (
+				07F195C623728DC5008820B1 /* RSA.m */,
+				07F195C723728DC5008820B1 /* RSA.h */,
+			);
+			path = RSAEncrypt;
+			sourceTree = "<group>";
+		};
+		07F195C923728DC5008820B1 /* NSString+Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				07F195CA23728DC5008820B1 /* NSString+Encryption.m */,
+				07F195CB23728DC5008820B1 /* NSString+Encryption.h */,
+			);
+			path = "NSString+Encryption";
+			sourceTree = "<group>";
+		};
+		07F195D223728DC5008820B1 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				07F195D323728DC5008820B1 /* LWButton.m */,
+				07F195D423728DC5008820B1 /* LWButton.h */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		07F195D623728DC5008820B1 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				07F195D723728DC5008820B1 /* HHLogFormatter.m */,
+				07F195D823728DC5008820B1 /* LDLog.m */,
+				07F195D923728DC5008820B1 /* HHLogFormatter.h */,
+				07F195DA23728DC5008820B1 /* LDLog.h */,
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
+		07F195DC23728DC5008820B1 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				07F195DD23728DC5008820B1 /* AsyncUdpSocket.m */,
+				07F195DE23728DC5008820B1 /* AsyncUdpSocket.h */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		07F195F723728F37008820B1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				07CD4D4B2372900F0060C9C7 /* HFSmartLinkDeviceInfo.h */,
+				07CD4D4A2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m */,
+				07CD4D4C2372900F0060C9C7 /* Udpproxy.h */,
+				07CD4D4D2372900F0060C9C7 /* Udpproxy.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		07F1960823728F45008820B1 /* LWHttp */ = {
+			isa = PBXGroup;
+			children = (
+				07CD4D45237290060060C9C7 /* HttpRequest.h */,
+				07CD4D44237290060060C9C7 /* HttpRequest.m */,
+				07CD4D47237290060060C9C7 /* LWBasicNetWorkTools.h */,
+				07CD4D46237290060060C9C7 /* LWBasicNetWorkTools.m */,
+			);
+			name = LWHttp;
+			sourceTree = "<group>";
 		};
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
@@ -235,15 +402,26 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				0798D229237043AF00A91216 /* LWHttp */,
-				0798D224237043A300A91216 /* Model */,
+				07F1960823728F45008820B1 /* LWHttp */,
+				07F195F723728F37008820B1 /* Model */,
+				07F195AE23728DC5008820B1 /* WenControl */,
+				0763A8BE236B0A1600DF905F /* Frameworks */,
 				0763A8F5236B0B1400DF905F /* HFSmartLink.h */,
+				134814211AA4EA7D00B7C361 /* Products */,
 				0763A8C1236B0AD000DF905F /* React.xcodeproj */,
 				B3E7B5881CC2AC0600A0062D /* Smartlink.h */,
 				B3E7B5891CC2AC0600A0062D /* Smartlink.m */,
-				134814211AA4EA7D00B7C361 /* Products */,
-				0763A8BE236B0A1600DF905F /* Frameworks */,
+				C9A1F2A8BC309CFCF5E2B8F5 /* Pods */,
 			);
+			sourceTree = "<group>";
+		};
+		C9A1F2A8BC309CFCF5E2B8F5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4958243A93F91E4B774D0276 /* Pods-Smartlink.debug.xcconfig */,
+				393A9E69746D2CC38EFE543B /* Pods-Smartlink.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +431,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "Smartlink" */;
 			buildPhases = (
+				0F4CE0DABFD35A90124DFC64 /* [CP] Check Pods Manifest.lock */,
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
@@ -419,14 +598,41 @@
 		};
 /* End PBXReferenceProxy section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0F4CE0DABFD35A90124DFC64 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Smartlink-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07A1316323700A330017E657 /* libsmartlinklib_v7.a in Sources */,
-				07A1315F2370084D0017E657 /* HFSmartLink.h in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */,
+				07CD4D4E2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m in Sources */,
+				07CD4D48237290060060C9C7 /* HttpRequest.m in Sources */,
+				07CD4D4F2372900F0060C9C7 /* Udpproxy.m in Sources */,
+				07CD4D49237290060060C9C7 /* LWBasicNetWorkTools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +736,7 @@
 		};
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4958243A93F91E4B774D0276 /* Pods-Smartlink.debug.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -541,7 +748,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = Smartlink;
 				SKIP_INSTALL = YES;
 			};
@@ -549,6 +759,7 @@
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 393A9E69746D2CC38EFE543B /* Pods-Smartlink.release.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,7 +771,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = Smartlink;
 				SKIP_INSTALL = YES;
 			};

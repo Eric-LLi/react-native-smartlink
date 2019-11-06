@@ -4,4 +4,7 @@
    <FileRef
       location = "group:Smartlink.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
