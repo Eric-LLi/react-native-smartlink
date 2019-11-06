@@ -66,7 +66,7 @@
         [self pritDataWith:baseBodyData];
 
         
-        [LWBasicNetWorkToolsnextBtnDidClicked APNetRequestPOSTWithRequestURL:@"http://10.10.100.254" WithBodyData:baseBodyData withRequestBlock:^(id result, NSError *err) {
+        [LWBasicNetWorkTools APNetRequestPOSTWithRequestURL:@"http://10.10.100.254" WithBodyData:baseBodyData withRequestBlock:^(id result, NSError *err) {
            
             NSData *resultData = (NSData *)result;
             NSString *resultStr = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
