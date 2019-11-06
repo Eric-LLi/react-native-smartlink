@@ -13,6 +13,10 @@
 		07CD4D49237290060060C9C7 /* LWBasicNetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D46237290060060C9C7 /* LWBasicNetWorkTools.m */; };
 		07CD4D4E2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4A2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m */; };
 		07CD4D4F2372900F0060C9C7 /* Udpproxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4D2372900F0060C9C7 /* Udpproxy.m */; };
+		07CD4D50237292D70060C9C7 /* HttpRequest.h in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D45237290060060C9C7 /* HttpRequest.h */; };
+		07CD4D51237292D70060C9C7 /* LWBasicNetWorkTools.h in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D47237290060060C9C7 /* LWBasicNetWorkTools.h */; };
+		07CD4D52237292E20060C9C7 /* HFSmartLinkDeviceInfo.h in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4B2372900F0060C9C7 /* HFSmartLinkDeviceInfo.h */; };
+		07CD4D53237292E20060C9C7 /* Udpproxy.h in Sources */ = {isa = PBXBuildFile; fileRef = 07CD4D4C2372900F0060C9C7 /* Udpproxy.h */; };
 		24780860CCED2911D8AE697F /* libPods-Smartlink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66174C32C68B8C15C2F5DF95 /* libPods-Smartlink.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
 /* End PBXBuildFile section */
@@ -628,6 +632,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07CD4D52237292E20060C9C7 /* HFSmartLinkDeviceInfo.h in Sources */,
+				07CD4D53237292E20060C9C7 /* Udpproxy.h in Sources */,
+				07CD4D50237292D70060C9C7 /* HttpRequest.h in Sources */,
+				07CD4D51237292D70060C9C7 /* LWBasicNetWorkTools.h in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */,
 				07CD4D4E2372900F0060C9C7 /* HFSmartLinkDeviceInfo.m in Sources */,
 				07CD4D48237290060060C9C7 /* HttpRequest.m in Sources */,
