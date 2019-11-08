@@ -22,6 +22,7 @@ NSString * const NOT_SUPPORTED_MSG = @"Not supported in iOS<11.0...";
 NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
 NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
+NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat, please make sure turn your thermostat into AP mode...";
 
 RCT_EXPORT_MODULE()
 
@@ -36,10 +37,10 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
     if([self isWiFiEnabled]){
         if (@available(iOS 11.0, *)) {
             NSString * current = [self get_ssid];
-            if([apSSID containsString:current]){
+            if([apSSID isEqualToString:current]){
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
-                   //
+                    //
                 });
             } else {
                 reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
@@ -153,21 +154,32 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
                   connectResolver:(RCTPromiseResolveBlock)resolve
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
-    if (@available(iOS 11.0, *)) { dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self->apSSID = ssid;
-        NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
-        configuration.joinOnce = true;
-        
-        [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                NSString * msg =[error localizedDescription];
-                NSLog(@"%@",msg);
-                reject(@"Error", msg, nil);
-            } else {
-                resolve(@YES);
-            }
-        }];
-    });
+    if (@available(iOS 11.0, *)) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
+            configuration.joinOnce = true;
+            
+            [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
+                if (error != nil) {
+                    NSString * msg =[error localizedDescription];
+                    NSLog(@"%@",msg);
+                    reject(@"Error", msg, nil);
+                } else {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                        [NSThread sleepForTimeInterval:3.0f];
+                        for (int i=0; i < 5; i++) {
+                            if([[self get_ssid] isEqualToString: ssid]){
+                                self->apSSID = ssid;
+                                resolve(@YES);
+                                return;
+                            }
+                            [NSThread sleepForTimeInterval:1.0f];
+                        }
+                        reject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
+                    });
+                }
+            }];
+        });
     } else {
         reject(@"Error", NOT_SUPPORTED_MSG, nil);
     }
