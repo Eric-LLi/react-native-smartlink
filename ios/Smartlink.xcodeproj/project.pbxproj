@@ -7,29 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07287113237295ED00F15A45 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728710F237295EC00F15A45 /* HttpRequest.m */; };
-		07287114237295ED00F15A45 /* LWBasicNetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287112237295ED00F15A45 /* LWBasicNetWorkTools.m */; };
 		07287119237295F500F15A45 /* HFSmartLinkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287117237295F500F15A45 /* HFSmartLinkDeviceInfo.m */; };
 		0728711A237295F500F15A45 /* Udpproxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287118237295F500F15A45 /* Udpproxy.m */; };
-		0728714C237295FF00F15A45 /* HHLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728711F237295FE00F15A45 /* HHLogFormatter.m */; };
-		0728714D237295FF00F15A45 /* LDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287120237295FE00F15A45 /* LDLog.m */; };
-		0728714E237295FF00F15A45 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287124237295FE00F15A45 /* AsyncUdpSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		0728714F237295FF00F15A45 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287129237295FE00F15A45 /* NSString+Hash.m */; };
-		07287150237295FF00F15A45 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728712D237295FE00F15A45 /* RSA.m */; };
-		07287151237295FF00F15A45 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728712F237295FE00F15A45 /* Base64.m */; };
-		07287152237295FF00F15A45 /* NSString+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287131237295FE00F15A45 /* NSString+Encryption.m */; };
-		07287153237295FF00F15A45 /* CocoaSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287133237295FE00F15A45 /* CocoaSecurity.m */; };
-		07287154237295FF00F15A45 /* SimplePingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287135237295FE00F15A45 /* SimplePingHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		07287155237295FF00F15A45 /* ScanLAN.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287136237295FF00F15A45 /* ScanLAN.m */; };
-		07287156237295FF00F15A45 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287137237295FF00F15A45 /* SimplePing.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		07287157237295FF00F15A45 /* UIImageView+LWColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728713C237295FF00F15A45 /* UIImageView+LWColorAtPixel.m */; };
-		07287158237295FF00F15A45 /* UIButton+LWUnderlineButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728713F237295FF00F15A45 /* UIButton+LWUnderlineButton.m */; };
-		07287159237295FF00F15A45 /* NSDictionary+LWExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287140237295FF00F15A45 /* NSDictionary+LWExtension.m */; };
-		0728715A237295FF00F15A45 /* UIView+LWFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287142237295FF00F15A45 /* UIView+LWFrame.m */; };
-		0728715B237295FF00F15A45 /* NSData+LWData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287143237295FF00F15A45 /* NSData+LWData.m */; };
-		0728715C237295FF00F15A45 /* UIView+LWQuickControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287145237295FF00F15A45 /* UIView+LWQuickControl.m */; };
-		0728715D237295FF00F15A45 /* LWNSHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287147237295FF00F15A45 /* LWNSHelper.m */; };
-		0728715E237295FF00F15A45 /* LWButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728714A237295FF00F15A45 /* LWButton.m */; };
 		0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8D5236B0AD100DF905F /* libReact.a */; };
 		0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
@@ -164,54 +143,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0728710F237295EC00F15A45 /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpRequest.m; path = LWHttp/HttpRequest.m; sourceTree = "<group>"; };
-		07287110237295ED00F15A45 /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HttpRequest.h; path = LWHttp/HttpRequest.h; sourceTree = "<group>"; };
-		07287111237295ED00F15A45 /* LWBasicNetWorkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LWBasicNetWorkTools.h; path = LWHttp/LWBasicNetWorkTools.h; sourceTree = "<group>"; };
-		07287112237295ED00F15A45 /* LWBasicNetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LWBasicNetWorkTools.m; path = LWHttp/LWBasicNetWorkTools.m; sourceTree = "<group>"; };
 		07287115237295F500F15A45 /* Udpproxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Udpproxy.h; path = Model/Udpproxy.h; sourceTree = "<group>"; };
 		07287116237295F500F15A45 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HFSmartLinkDeviceInfo.h; path = Model/HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
 		07287117237295F500F15A45 /* HFSmartLinkDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HFSmartLinkDeviceInfo.m; path = Model/HFSmartLinkDeviceInfo.m; sourceTree = "<group>"; };
 		07287118237295F500F15A45 /* Udpproxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Udpproxy.m; path = Model/Udpproxy.m; sourceTree = "<group>"; };
-		0728711B237295FE00F15A45 /* SimplePing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimplePing.h; path = WenControl/SimplePing.h; sourceTree = "<group>"; };
-		0728711C237295FE00F15A45 /* ScanLAN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanLAN.h; path = WenControl/ScanLAN.h; sourceTree = "<group>"; };
-		0728711D237295FE00F15A45 /* SimplePingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimplePingHelper.h; path = WenControl/SimplePingHelper.h; sourceTree = "<group>"; };
-		0728711F237295FE00F15A45 /* HHLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHLogFormatter.m; sourceTree = "<group>"; };
-		07287120237295FE00F15A45 /* LDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDLog.m; sourceTree = "<group>"; };
-		07287121237295FE00F15A45 /* HHLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHLogFormatter.h; sourceTree = "<group>"; };
-		07287122237295FE00F15A45 /* LDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDLog.h; sourceTree = "<group>"; };
-		07287124237295FE00F15A45 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
-		07287125237295FE00F15A45 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
-		07287127237295FE00F15A45 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
-		07287129237295FE00F15A45 /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
-		0728712A237295FE00F15A45 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
-		0728712B237295FE00F15A45 /* CocoaSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaSecurity.h; sourceTree = "<group>"; };
-		0728712D237295FE00F15A45 /* RSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
-		0728712E237295FE00F15A45 /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
-		0728712F237295FE00F15A45 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		07287131237295FE00F15A45 /* NSString+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Encryption.m"; sourceTree = "<group>"; };
-		07287132237295FE00F15A45 /* NSString+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Encryption.h"; sourceTree = "<group>"; };
-		07287133237295FE00F15A45 /* CocoaSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocoaSecurity.m; sourceTree = "<group>"; };
-		07287134237295FE00F15A45 /* LWNSHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LWNSHelper.h; path = WenControl/LWNSHelper.h; sourceTree = "<group>"; };
-		07287135237295FE00F15A45 /* SimplePingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimplePingHelper.m; path = WenControl/SimplePingHelper.m; sourceTree = "<group>"; };
-		07287136237295FF00F15A45 /* ScanLAN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanLAN.m; path = WenControl/ScanLAN.m; sourceTree = "<group>"; };
-		07287137237295FF00F15A45 /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimplePing.m; path = WenControl/SimplePing.m; sourceTree = "<group>"; };
-		07287139237295FF00F15A45 /* NSDictionary+LWExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+LWExtension.h"; sourceTree = "<group>"; };
-		0728713A237295FF00F15A45 /* UIButton+LWUnderlineButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+LWUnderlineButton.h"; sourceTree = "<group>"; };
-		0728713B237295FF00F15A45 /* UIView+LWFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LWFrame.h"; sourceTree = "<group>"; };
-		0728713C237295FF00F15A45 /* UIImageView+LWColorAtPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+LWColorAtPixel.m"; sourceTree = "<group>"; };
-		0728713D237295FF00F15A45 /* UIView+LWQuickControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LWQuickControl.h"; sourceTree = "<group>"; };
-		0728713E237295FF00F15A45 /* NSData+LWData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LWData.h"; sourceTree = "<group>"; };
-		0728713F237295FF00F15A45 /* UIButton+LWUnderlineButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+LWUnderlineButton.m"; sourceTree = "<group>"; };
-		07287140237295FF00F15A45 /* NSDictionary+LWExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+LWExtension.m"; sourceTree = "<group>"; };
-		07287141237295FF00F15A45 /* UIImageView+LWColorAtPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+LWColorAtPixel.h"; sourceTree = "<group>"; };
-		07287142237295FF00F15A45 /* UIView+LWFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LWFrame.m"; sourceTree = "<group>"; };
-		07287143237295FF00F15A45 /* NSData+LWData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+LWData.m"; sourceTree = "<group>"; };
-		07287145237295FF00F15A45 /* UIView+LWQuickControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LWQuickControl.m"; sourceTree = "<group>"; };
-		07287146237295FF00F15A45 /* LWControlHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LWControlHeader.h; path = WenControl/LWControlHeader.h; sourceTree = "<group>"; };
-		07287147237295FF00F15A45 /* LWNSHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LWNSHelper.m; path = WenControl/LWNSHelper.m; sourceTree = "<group>"; };
-		07287148237295FF00F15A45 /* LWMacroDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LWMacroDefinition.h; path = WenControl/LWMacroDefinition.h; sourceTree = "<group>"; };
-		0728714A237295FF00F15A45 /* LWButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LWButton.m; sourceTree = "<group>"; };
-		0728714B237295FF00F15A45 /* LWButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LWButton.h; sourceTree = "<group>"; };
 		0763A8C1236B0AD000DF905F /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = SOURCE_ROOT; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
@@ -246,141 +181,6 @@
 				07287118237295F500F15A45 /* Udpproxy.m */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		0728710D237295CB00F15A45 /* LWHttp */ = {
-			isa = PBXGroup;
-			children = (
-				07287110237295ED00F15A45 /* HttpRequest.h */,
-				0728710F237295EC00F15A45 /* HttpRequest.m */,
-				07287111237295ED00F15A45 /* LWBasicNetWorkTools.h */,
-				07287112237295ED00F15A45 /* LWBasicNetWorkTools.m */,
-			);
-			name = LWHttp;
-			sourceTree = "<group>";
-		};
-		0728710E237295DE00F15A45 /* WenControl */ = {
-			isa = PBXGroup;
-			children = (
-				07287138237295FF00F15A45 /* category */,
-				07287126237295FE00F15A45 /* Encryptions */,
-				0728711E237295FE00F15A45 /* Log */,
-				07287146237295FF00F15A45 /* LWControlHeader.h */,
-				07287148237295FF00F15A45 /* LWMacroDefinition.h */,
-				07287134237295FE00F15A45 /* LWNSHelper.h */,
-				07287147237295FF00F15A45 /* LWNSHelper.m */,
-				0728711C237295FE00F15A45 /* ScanLAN.h */,
-				07287136237295FF00F15A45 /* ScanLAN.m */,
-				0728711B237295FE00F15A45 /* SimplePing.h */,
-				07287137237295FF00F15A45 /* SimplePing.m */,
-				0728711D237295FE00F15A45 /* SimplePingHelper.h */,
-				07287135237295FE00F15A45 /* SimplePingHelper.m */,
-				07287123237295FE00F15A45 /* Socket */,
-				07287149237295FF00F15A45 /* view */,
-			);
-			name = WenControl;
-			sourceTree = "<group>";
-		};
-		0728711E237295FE00F15A45 /* Log */ = {
-			isa = PBXGroup;
-			children = (
-				0728711F237295FE00F15A45 /* HHLogFormatter.m */,
-				07287120237295FE00F15A45 /* LDLog.m */,
-				07287121237295FE00F15A45 /* HHLogFormatter.h */,
-				07287122237295FE00F15A45 /* LDLog.h */,
-			);
-			name = Log;
-			path = WenControl/Log;
-			sourceTree = "<group>";
-		};
-		07287123237295FE00F15A45 /* Socket */ = {
-			isa = PBXGroup;
-			children = (
-				07287124237295FE00F15A45 /* AsyncUdpSocket.m */,
-				07287125237295FE00F15A45 /* AsyncUdpSocket.h */,
-			);
-			name = Socket;
-			path = WenControl/Socket;
-			sourceTree = "<group>";
-		};
-		07287126237295FE00F15A45 /* Encryptions */ = {
-			isa = PBXGroup;
-			children = (
-				07287127237295FE00F15A45 /* Base64.h */,
-				07287128237295FE00F15A45 /* Hash */,
-				0728712B237295FE00F15A45 /* CocoaSecurity.h */,
-				0728712C237295FE00F15A45 /* RSAEncrypt */,
-				0728712F237295FE00F15A45 /* Base64.m */,
-				07287130237295FE00F15A45 /* NSString+Encryption */,
-				07287133237295FE00F15A45 /* CocoaSecurity.m */,
-			);
-			name = Encryptions;
-			path = WenControl/Encryptions;
-			sourceTree = "<group>";
-		};
-		07287128237295FE00F15A45 /* Hash */ = {
-			isa = PBXGroup;
-			children = (
-				07287129237295FE00F15A45 /* NSString+Hash.m */,
-				0728712A237295FE00F15A45 /* NSString+Hash.h */,
-			);
-			path = Hash;
-			sourceTree = "<group>";
-		};
-		0728712C237295FE00F15A45 /* RSAEncrypt */ = {
-			isa = PBXGroup;
-			children = (
-				0728712D237295FE00F15A45 /* RSA.m */,
-				0728712E237295FE00F15A45 /* RSA.h */,
-			);
-			path = RSAEncrypt;
-			sourceTree = "<group>";
-		};
-		07287130237295FE00F15A45 /* NSString+Encryption */ = {
-			isa = PBXGroup;
-			children = (
-				07287131237295FE00F15A45 /* NSString+Encryption.m */,
-				07287132237295FE00F15A45 /* NSString+Encryption.h */,
-			);
-			path = "NSString+Encryption";
-			sourceTree = "<group>";
-		};
-		07287138237295FF00F15A45 /* category */ = {
-			isa = PBXGroup;
-			children = (
-				07287139237295FF00F15A45 /* NSDictionary+LWExtension.h */,
-				0728713A237295FF00F15A45 /* UIButton+LWUnderlineButton.h */,
-				0728713B237295FF00F15A45 /* UIView+LWFrame.h */,
-				0728713C237295FF00F15A45 /* UIImageView+LWColorAtPixel.m */,
-				0728713D237295FF00F15A45 /* UIView+LWQuickControl.h */,
-				0728713E237295FF00F15A45 /* NSData+LWData.h */,
-				0728713F237295FF00F15A45 /* UIButton+LWUnderlineButton.m */,
-				07287140237295FF00F15A45 /* NSDictionary+LWExtension.m */,
-				07287141237295FF00F15A45 /* UIImageView+LWColorAtPixel.h */,
-				07287142237295FF00F15A45 /* UIView+LWFrame.m */,
-				07287143237295FF00F15A45 /* NSData+LWData.m */,
-				07287144237295FF00F15A45 /* GTM */,
-				07287145237295FF00F15A45 /* UIView+LWQuickControl.m */,
-			);
-			name = category;
-			path = WenControl/category;
-			sourceTree = "<group>";
-		};
-		07287144237295FF00F15A45 /* GTM */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GTM;
-			sourceTree = "<group>";
-		};
-		07287149237295FF00F15A45 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				0728714A237295FF00F15A45 /* LWButton.m */,
-				0728714B237295FF00F15A45 /* LWButton.h */,
-			);
-			name = view;
-			path = WenControl/view;
 			sourceTree = "<group>";
 		};
 		0763A8BE236B0A1600DF905F /* Frameworks */ = {
@@ -426,8 +226,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				0728710E237295DE00F15A45 /* WenControl */,
-				0728710D237295CB00F15A45 /* LWHttp */,
 				0728710C237295C500F15A45 /* Model */,
 				0763A8BE236B0A1600DF905F /* Frameworks */,
 				0763A8F5236B0B1400DF905F /* HFSmartLink.h */,
@@ -654,28 +452,7 @@
 			files = (
 				B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */,
 				07287119237295F500F15A45 /* HFSmartLinkDeviceInfo.m in Sources */,
-				07287113237295ED00F15A45 /* HttpRequest.m in Sources */,
-				07287153237295FF00F15A45 /* CocoaSecurity.m in Sources */,
-				0728715E237295FF00F15A45 /* LWButton.m in Sources */,
-				0728714E237295FF00F15A45 /* AsyncUdpSocket.m in Sources */,
-				0728714F237295FF00F15A45 /* NSString+Hash.m in Sources */,
-				0728714D237295FF00F15A45 /* LDLog.m in Sources */,
-				07287157237295FF00F15A45 /* UIImageView+LWColorAtPixel.m in Sources */,
-				0728715B237295FF00F15A45 /* NSData+LWData.m in Sources */,
-				07287159237295FF00F15A45 /* NSDictionary+LWExtension.m in Sources */,
-				0728715A237295FF00F15A45 /* UIView+LWFrame.m in Sources */,
-				07287154237295FF00F15A45 /* SimplePingHelper.m in Sources */,
-				07287150237295FF00F15A45 /* RSA.m in Sources */,
-				0728714C237295FF00F15A45 /* HHLogFormatter.m in Sources */,
 				0728711A237295F500F15A45 /* Udpproxy.m in Sources */,
-				0728715C237295FF00F15A45 /* UIView+LWQuickControl.m in Sources */,
-				07287114237295ED00F15A45 /* LWBasicNetWorkTools.m in Sources */,
-				07287155237295FF00F15A45 /* ScanLAN.m in Sources */,
-				07287152237295FF00F15A45 /* NSString+Encryption.m in Sources */,
-				07287158237295FF00F15A45 /* UIButton+LWUnderlineButton.m in Sources */,
-				07287151237295FF00F15A45 /* Base64.m in Sources */,
-				07287156237295FF00F15A45 /* SimplePing.m in Sources */,
-				0728715D237295FF00F15A45 /* LWNSHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

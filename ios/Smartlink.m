@@ -5,9 +5,6 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import "LWControlHeader.h"
-#import "HttpRequest.h"
-#import "Udpproxy.h"
 
 @implementation Smartlink
 
@@ -42,23 +39,7 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
             if([apSSID containsString:current]){
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
-                    [HttpRequest connectModuleWithWiFiPwd:pwd withNetSSID:ssid withSSID:apSSID didLoadData:^(NSDictionary *result, NSError *err) {
-                        if (!err) {
-                            NSInteger suc = [result[@"RC"] integerValue];
-                            if (suc == 0) {
-                                //Success
-                                //Save router ssid and pwd
-                                currentSSID = ssid;
-                                currentPwd = pwd;
-                                resolve(@YES);
-                            }else{
-                                //Fail
-                                reject(@"Error", FAIL_SEND_CONFIG_MSG, nil);
-                            }
-                        }else{
-                            reject(@"Error", FAIL_SEND_CONFIG_MSG, nil);
-                        }
-                    }];
+                   //
                 });
             } else {
                 reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
