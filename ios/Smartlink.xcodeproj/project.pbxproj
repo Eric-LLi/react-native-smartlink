@@ -11,8 +11,8 @@
 		0728711A237295F500F15A45 /* Udpproxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287118237295F500F15A45 /* Udpproxy.m */; };
 		0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8D5236B0AD100DF905F /* libReact.a */; };
 		0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
+		2AE50EEB695C9427524879DF /* libPods-Smartlink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 393A9981275D1820D8160336 /* libPods-Smartlink.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
-		BDF48D027A00FDEE1A439AD2 /* Pods_Smartlink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F016338E320C86E43437F2 /* Pods_Smartlink.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,9 +151,9 @@
 		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = SOURCE_ROOT; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libSmartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSmartlink.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		393A9981275D1820D8160336 /* libPods-Smartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smartlink.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		393A9E69746D2CC38EFE543B /* Pods-Smartlink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smartlink.release.xcconfig"; path = "Target Support Files/Pods-Smartlink/Pods-Smartlink.release.xcconfig"; sourceTree = "<group>"; };
 		4958243A93F91E4B774D0276 /* Pods-Smartlink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smartlink.debug.xcconfig"; path = "Target Support Files/Pods-Smartlink/Pods-Smartlink.debug.xcconfig"; sourceTree = "<group>"; };
-		53F016338E320C86E43437F2 /* Pods_Smartlink.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Smartlink.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* Smartlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smartlink.h; sourceTree = SOURCE_ROOT; };
 		B3E7B5891CC2AC0600A0062D /* Smartlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Smartlink.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -165,7 +165,7 @@
 			files = (
 				0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */,
 				0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */,
-				BDF48D027A00FDEE1A439AD2 /* Pods_Smartlink.framework in Frameworks */,
+				2AE50EEB695C9427524879DF /* libPods-Smartlink.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,7 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */,
-				53F016338E320C86E43437F2 /* Pods_Smartlink.framework */,
+				393A9981275D1820D8160336 /* libPods-Smartlink.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
