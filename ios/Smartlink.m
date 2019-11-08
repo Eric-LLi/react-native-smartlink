@@ -5,16 +5,16 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "SmtlkV20.h"
 
-@implementation Smartlink
+@implementation Smartlink{
+    NSString *apSSID;
+    NSString *currentSSID;
+    NSString *currentPwd;
+    HFSmartLink * smtlk;
+}
 
 static BOOL isConnecting = false;
-BOOL v3xSupport= false;
-static NSString *apSSID;
-static NSString *currentSSID;
-static NSString *currentPwd;
-NSString * userStr= @"";
-static HFSmartLink * smtlk;
 
 NSString * const WIFI_DISCONNECTED_MSG = @"Please enable WiFi and connect to your router...";
 NSString * const TRY_AGAIN_MSG = @"Please try again...";
@@ -64,7 +64,7 @@ RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
         // Call long-running code on background thread
         if(!isConnecting){
             isConnecting = true;
-            [smtlk startWithSSID:ssid Key:pwd UserStr:userStr withV3x:v3xSupport processblock: ^(NSInteger pro) {
+            [self->smtlk startWithSSID:ssid Key:pwd UserStr:@"" withV3x:false processblock: ^(NSInteger pro) {
             } successBlock:^(HFSmartLinkDeviceInfo *dev) {
                 NSDictionary * device = @{
                     @"mac": dev.mac,
@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(SL_Connect:(NSString *)ssid pwd:(NSString *)pwd
             }
              ];
         } else {
-            [smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
+            [self->smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
                 if(isOk){
                     isConnecting  = false;
                     reject(@"error", TRY_AGAIN_MSG, nil);
@@ -154,7 +154,7 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
     if (@available(iOS 11.0, *)) { dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        apSSID = ssid;
+        self->apSSID = ssid;
         NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
         configuration.joinOnce = true;
         

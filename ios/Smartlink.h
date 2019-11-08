@@ -1,5 +1,5 @@
 #import <React/RCTBridgeModule.h>
-
-@interface Smartlink : NSObject <RCTBridgeModule>
+#import "SmtlkManager.h"
+@interface Smartlink : NSObject <RCTBridgeModule, SmtlkManagerDelegate>
 
 @end
