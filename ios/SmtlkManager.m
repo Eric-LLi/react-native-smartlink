@@ -12,21 +12,21 @@
 #import "Macros.h"
 #import "MFUtil.h"
 
-#define SMTLKUDPBCADD @"255.255.255.255"
+#define SMTLKUDPBCADD @"10.10.100.254"
+
 #define SMTLKUDPRMPORT 48899
-#define SMTLKDISCOVERY_DEFAULT      @"HF-A11ASSISTHREAD"
+#define TIMEOUT 60
+#define SMTLKDISCOVERY_DEFAULT @"HF-A11ASSISTHREAD"
 #define PINGTIMOUT_MAXRETRY      5
 static SmtlkManager* _instance = nil;
 
 @interface SmtlkManager()<GCDAsyncUdpSocketDelegate>
 {
-
-    
     NSString *hostMAC;
     NSString *hostMID;
     NSString *udpHost;
     uint16_t udpLocalPort;
-
+    NSDate *startedTime;
 }
 @property (nonatomic, retain) GCDAsyncUdpSocket *udpSockBroadCast;
 
@@ -61,7 +61,7 @@ static SmtlkManager* _instance = nil;
         if(![[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"])
         {
             [[NSUserDefaults standardUserDefaults] setObject:SMTLKUDPBCADD forKey:@"kUDPBCAddr"];
-
+            
         }
         _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
         
@@ -77,8 +77,8 @@ static SmtlkManager* _instance = nil;
             [[NSUserDefaults standardUserDefaults] setObject:SMTLKDISCOVERY_DEFAULT forKey:@"kCMDDiscovery"];
             
         }
-
-
+        
+        
     }
     return self;
 }
@@ -88,7 +88,7 @@ static SmtlkManager* _instance = nil;
     [[NSUserDefaults standardUserDefaults] setObject:SMTLKUDPBCADD forKey:@"kUDPBCAddr"];
     [[NSUserDefaults standardUserDefaults] setValue:@(SMTLKUDPRMPORT) forKey:@"kUDPRMPort"];
     [[NSUserDefaults standardUserDefaults] setObject:SMTLKDISCOVERY_DEFAULT forKey:@"kCMDDiscovery"];
-
+    
     _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
     _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
     _cmdDiscovery = [[NSUserDefaults standardUserDefaults] valueForKey:@"kCMDDiscovery"];
@@ -109,7 +109,7 @@ static SmtlkManager* _instance = nil;
 
 -(void) startSmtlk
 {
-
+    self->startedTime = [NSDate date];
     [self reloadUDPArgs];
     if(_timer)
     {
@@ -124,23 +124,23 @@ static SmtlkManager* _instance = nil;
     }
     // Peter: code for UDP
     self.udpSockBroadCast = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
-                                            delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+                                                          delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
     
-
+    
     
     NSError *error = nil;
     
     // Peter: enable BroadCast
     if(![self.udpSockBroadCast enableBroadcast:YES error:&error])
     {
-        NSLog(@"\Error enable broadcast: %@", error);
+        NSLog(@"❌ Error enable broadcast: %@", error);
         return;
         
     }
     
     if(![self.udpSockBroadCast enableReusePort:YES error:&error])
     {
-        NSLog(@"\Error enable ReusePort: %@", error);
+        NSLog(@"❌ Error enable ReusePort: %@", error);
         return;
         
     }
@@ -148,13 +148,13 @@ static SmtlkManager* _instance = nil;
     
     if (![self.udpSockBroadCast bindToPort:10013 error:&error])
     {
-        NSLog(@"\Error binding: %@", error);
+        NSLog(@"❌ Error binding: %@", error);
         return;
     }
     
     if (![self.udpSockBroadCast beginReceiving:&error])
     {
-        NSLog(@"Error receiving: %@", error);
+        NSLog(@"❌ Error receiving: %@", error);
         return;
     }
     
@@ -162,7 +162,7 @@ static SmtlkManager* _instance = nil;
     self.cmdStatus = SmtlkCmdStatus_None;
     self.dateATWMODE = nil;
     NSLog(@"\nUDP bind&enable broadcast, localHost= %@, port=%hu!", self.udpSockBroadCast.localHost, self.udpSockBroadCast.localPort);
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(smtlkTimeOut) userInfo:nil repeats:YES];
+    //    self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(smtlkTimeOut) userInfo:nil repeats:YES];
     
     [self smtlkTimeOut];
 }
@@ -187,7 +187,7 @@ static SmtlkManager* _instance = nil;
     self.pingServices = nil;
     self.pingTimeoutRetry = 0;
     self.dateATWMODE = nil;
-
+    
     
     // 主线程执行：
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -196,10 +196,10 @@ static SmtlkManager* _instance = nil;
             [self->_delegate smtlkV20CleanAPList];
         }
     });
-
-
+    
+    
     NSLog(@"UDP closed");
-
+    
 }
 
 
@@ -213,11 +213,16 @@ static SmtlkManager* _instance = nil;
     NSLog(@"send:%@", _cmdDiscovery);
     sd = [_cmdDiscovery dataUsingEncoding: NSASCIIStringEncoding];
     
+    //    [self.udpSockBroadCast sendData:sd
+    //                             toHost:_udpBCAddr
+    //                               port:_udpRMPort
+    //                        withTimeout:-1
+    //                                tag:SmtlkCommand_DISCOVERY];
     [self.udpSockBroadCast sendData:sd
-               toHost:_udpBCAddr
-                 port:_udpRMPort
-          withTimeout:-1
-                  tag:SmtlkCommand_DISCOVERY];
+                             toHost:SMTLKUDPBCADD
+                               port:_udpRMPort
+                        withTimeout:-1
+                                tag:SmtlkCommand_DISCOVERY];
 }
 
 - (void)smtlkTimeOut
@@ -228,7 +233,7 @@ static SmtlkManager* _instance = nil;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_source_t timerOne = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     dispatch_source_set_timer(timerOne, dispatch_walltime(NULL, 0), period * NSEC_PER_SEC, 0); //每period秒执行
-        dispatch_source_set_event_handler(timerOne, ^{
+    dispatch_source_set_event_handler(timerOne, ^{
         
         if([MFUtil isWiFiConnected] && [MFUtil routerIp])
         {
@@ -251,60 +256,60 @@ static SmtlkManager* _instance = nil;
                         [STDPingServices startPingAddress:apIp
                                           callbackHandler:^(STDPingItem *pingItem, NSArray *pingItems)
                          {
-                             if (pingItem.status != STDPingStatusFinished)
-                             {
-                                 NSLog(@"\nping %@ statue=%@,(%@)",pingToIP, @(pingItem.status), pingItem.description);
-                                 if([pingToIP isEqualToString:apIp])
-                                 {
-                                     if(pingItem.status == STDPingStatusDidReceivePacket)
-                                     {
-                                         // When the AP module is able to be ping ok. try into the command mode;
-                                         ws.pingTimeoutRetry = 0;
-               
-                                     }
-                                     else if(pingItem.status == STDPingStatusDidTimeout
-                                             || pingItem.status == STDPingStatusError)
-                                     {
-                                         // timeout or error, the retry count be increase;
-                                         // if the retry reach to max count.
-                                         // stop ping service. and reset retry count.
-                                         // exit command mode.
-                                         // notfiy the UI, clean ap list.
-                                         
-                                         ws.pingTimeoutRetry++;
-                                         
-                                         if(ws.pingTimeoutRetry >= PINGTIMOUT_MAXRETRY)
-                                         {
-//                                             ws.pingTimeoutRetry = 0;
-//                                             ws.inCommandMode = NO;
-//                                             udpHost = nil;
-                                             
-                                             
-                                              ws.pingServices = nil;
-                                             
-                                             [ws restartSmtlk];
-//                                             [ws.arrAP removeAllObjects];
-                                             
-//                                             if(ws.delegate
-//                                                && [ws.delegate respondsToSelector:@selector(smtlkV20EventPingFailed)])
-//                                             {
-//                                                 [ws.delegate smtlkV20EventPingFailed];
-//                                             }
-                                         }
-                                     }
-                                 }
-                                 else
-                                 {
-                                     ws.pingTimeoutRetry = 0;
-                                     ws.pingServices = nil;
-                                 }
-                             }
-                             else
-                             {
-                                 ws.pingTimeoutRetry = 0;
-                                 ws.pingServices = nil;
-                             }
-                         }];
+                            if (pingItem.status != STDPingStatusFinished)
+                            {
+                                NSLog(@"\nping %@ statue=%@,(%@)",pingToIP, @(pingItem.status), pingItem.description);
+                                if([pingToIP isEqualToString:apIp])
+                                {
+                                    if(pingItem.status == STDPingStatusDidReceivePacket)
+                                    {
+                                        // When the AP module is able to be ping ok. try into the command mode;
+                                        ws.pingTimeoutRetry = 0;
+                                        
+                                    }
+                                    else if(pingItem.status == STDPingStatusDidTimeout
+                                            || pingItem.status == STDPingStatusError)
+                                    {
+                                        // timeout or error, the retry count be increase;
+                                        // if the retry reach to max count.
+                                        // stop ping service. and reset retry count.
+                                        // exit command mode.
+                                        // notfiy the UI, clean ap list.
+                                        
+                                        ws.pingTimeoutRetry++;
+                                        
+                                        if(ws.pingTimeoutRetry >= PINGTIMOUT_MAXRETRY)
+                                        {
+                                            //                                             ws.pingTimeoutRetry = 0;
+                                            //                                             ws.inCommandMode = NO;
+                                            //                                             udpHost = nil;
+                                            
+                                            
+                                            ws.pingServices = nil;
+                                            
+                                            [ws restartSmtlk];
+                                            //                                             [ws.arrAP removeAllObjects];
+                                            
+                                            //                                             if(ws.delegate
+                                            //                                                && [ws.delegate respondsToSelector:@selector(smtlkV20EventPingFailed)])
+                                            //                                             {
+                                            //                                                 [ws.delegate smtlkV20EventPingFailed];
+                                            //                                             }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    ws.pingTimeoutRetry = 0;
+                                    ws.pingServices = nil;
+                                }
+                            }
+                            else
+                            {
+                                ws.pingTimeoutRetry = 0;
+                                ws.pingServices = nil;
+                            }
+                        }];
                     });
                     
                 }
@@ -383,11 +388,11 @@ static SmtlkManager* _instance = nil;
                     });
                     
                 });
-           
+                
             }
-
+            
         }
-
+        
         
     });
     
@@ -411,7 +416,7 @@ withFilterContext:(id)filterContext
                    stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]];
     
     
-    NSLog(@"udpSocket.state=%@, resp:%@", @(self.cmdStatus), s);
+    NSLog(@"👏👏👏 udpSocket.state=%@, resp:%@", @(self.cmdStatus), s);
     if(s && [s isEqualToString:@"+ok"])
     {
         // wmode has been done;
@@ -441,22 +446,19 @@ withFilterContext:(id)filterContext
         
         [self parseWSCANResult:s];
     }
-    
- 
-
 }
 
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didConnectToAddress:(NSData *)address
 {
-
+    
 }
 
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError * _Nullable)error
 {
-    NSLog(@"error=%@", error);
-
+    NSLog(@"❌ error=%@", error);
+    
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag
@@ -473,14 +475,22 @@ withFilterContext:(id)filterContext
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError  * _Nullable)error
 {
-    NSLog(@"close, error=%@", error);
+    NSLog(@"❌ close, error=%@", error);
+    NSDate *date = [NSDate date];
+    //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    //    [formatter setDateFormat:@"HH:mm:ss"];
+    double time = [date timeIntervalSinceDate:startedTime];
+    NSLog(@"❌ Time Dirrerence=%f", time);
+    if(time > TIMEOUT){
+        [self.delegate smtlkV20EventDisconnected];
+    }
 }
 
 #pragma mark - data handler
 -(void)parseWSCANResult:(NSString *)sResult
 {
     WS(ws);
-
+    
     BOOL isRefresh = YES;
     if([sResult hasPrefix:@"+ok="])
     {
@@ -505,10 +515,10 @@ withFilterContext:(id)filterContext
             NSLog(@"last the AP， %@", row);
             [arrThisAP addObject:@{@"ssid":arrColumn[1], @"mac":arrColumn[2], @"security":arrColumn[3]}];
             NSLog(@"callback the result for delegate.1");
-
+            
             
             [ws.arrAP addObjectsFromArray:arrThisAP];
-
+            
             // 主线程执行：
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
@@ -516,7 +526,7 @@ withFilterContext:(id)filterContext
                     [self->_delegate smtlkV20ScanAPList:arrThisAP isRefresh:isRefresh];
                 }
             });
-     
+            
         }
         else if([arrColumn count] == 1)
         {
@@ -547,7 +557,7 @@ withFilterContext:(id)filterContext
             {
                 NSLog(@"Instruction， %@", row);
                 hadAP = NO;
-
+                
             }
             else
             {
@@ -564,13 +574,13 @@ withFilterContext:(id)filterContext
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
                 {
-                    [self->_delegate smtlkV20ScanAPList:arrThisAP isRefresh:isRefresh];
+                    [self.delegate smtlkV20ScanAPList:arrThisAP isRefresh:isRefresh];
                 }
             });
-   
-
+            
+            
         }
-
+        
     }
     else
     {
@@ -611,12 +621,12 @@ withFilterContext:(id)filterContext
     
     // 主线程执行：
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (_delegate && [_delegate respondsToSelector:@selector(smtlkV20EventDiscover:MAC:MID:)])
+        if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20EventDiscover:MAC:MID:)])
         {
-            [_delegate smtlkV20EventDiscover:udpHost MAC:hostMAC MID:hostMID];
+            [self->_delegate smtlkV20EventDiscover:self->udpHost MAC:self->hostMAC MID:self->hostMID];
         }
     });
-
+    
 }
 
 @end

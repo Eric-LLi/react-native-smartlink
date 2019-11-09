@@ -5,16 +5,25 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import "SmtlkV20.h"
+//#import "SmtlkV20.h"
+#import "MFUtil.h"
 
-@implementation Smartlink{
+static BOOL isConnecting = false;
+
+@interface Smartlink()<SmtlkManagerDelegate>{
     NSString *apSSID;
     NSString *currentSSID;
     NSString *currentPwd;
     HFSmartLink * smtlk;
+    RCTPromiseResolveBlock sendResolve;
+    RCTPromiseRejectBlock sendReject;
+    //    STDPingServices *pingServices;
+    SmtlkManager *smtlkManager;
 }
 
-static BOOL isConnecting = false;
+@end
+
+@implementation Smartlink
 
 NSString * const WIFI_DISCONNECTED_MSG = @"Please enable WiFi and connect to your router...";
 NSString * const TRY_AGAIN_MSG = @"Please try again...";
@@ -34,14 +43,15 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
                   connectResolver:(RCTPromiseResolveBlock)resolve
                   connectRejecter:(RCTPromiseRejectBlock)reject){
-    if([self isWiFiEnabled]){
+    if([MFUtil isWiFiConnected]){
         if (@available(iOS 11.0, *)) {
-            NSString * current = [self get_ssid];
-            if([apSSID isEqualToString:current]){
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
-                    //
-                });
+            if([[self get_ssid] isEqualToString: self->apSSID]){
+                self-> sendReject = reject;
+                self-> sendResolve = resolve;
+                self->smtlkManager = [SmtlkManager sharedManager];
+                self->smtlkManager.delegate = self;
+                [self->smtlkManager startSmtlk];
+                
             } else {
                 reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
             }
@@ -125,12 +135,12 @@ RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
     if (@available(iOS 11.0, *)) {
-        if([self isWiFiEnabled]){
+        if([MFUtil isWiFiConnected]){
             currentSSID = ssid;
             currentPwd = passphrase;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid passphrase:passphrase isWEP:false];
-                configuration.joinOnce = true;
+                configuration.joinOnce = false;
                 
                 [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
                     if (error != nil) {
@@ -157,16 +167,19 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
     if (@available(iOS 11.0, *)) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
-            configuration.joinOnce = true;
+            configuration.joinOnce = false;
             
             [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
                 if (error != nil) {
-                    NSString * msg =[error localizedDescription];
-                    NSLog(@"%@",msg);
-                    reject(@"Error", msg, nil);
+                    if(error.code == 7){
+                        resolve(@NO);
+                    }else{
+                        NSString * msg =[error localizedDescription];
+                        NSLog(@"%@",msg);
+                        reject(@"Error", msg, nil);
+                    }
                 } else {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                        [NSThread sleepForTimeInterval:3.0f];
                         for (int i=0; i < 5; i++) {
                             if([[self get_ssid] isEqualToString: ssid]){
                                 self->apSSID = ssid;
@@ -213,17 +226,39 @@ RCT_REMAP_METHOD(Get_SSID,
     return ssid;
 }
 
-- (BOOL) isWiFiEnabled {
-    NSCountedSet * cset = [[NSCountedSet alloc] init];
-    struct ifaddrs *interfaces;
-    if( ! getifaddrs(&interfaces) ) {
-        for( struct ifaddrs *interface = interfaces; interface; interface = interface->ifa_next) {
-            if ( (interface->ifa_flags & IFF_UP) == IFF_UP ) {
-                [cset addObject:[NSString stringWithUTF8String:interface->ifa_name]];
-            }
-        }
-    }
-    return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
+//- (BOOL) isWiFiEnabled {
+//    NSCountedSet * cset = [[NSCountedSet alloc] init];
+//    struct ifaddrs *interfaces;
+//    if( ! getifaddrs(&interfaces) ) {
+//        for( struct ifaddrs *interface = interfaces; interface; interface = interface->ifa_next) {
+//            if ( (interface->ifa_flags & IFF_UP) == IFF_UP ) {
+//                [cset addObject:[NSString stringWithUTF8String:interface->ifa_name]];
+//            }
+//        }
+//    }
+//    return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
+//}
+#pragma mark - delegate
+-(void)smtlkV20Event:(BOOL)success wscanSSid:(NSString *)ssid mac:(NSString *)mac security:(NSString *)secu{
+    NSLog(@"❌ smtlkV20Event");
 }
+
+/*发送AT+WSCAN命令后的返回，每条返回包括搜到的一个路由器的SSID、MAC、加密方式*/
+-(void)smtlkV20EventDiscover:(NSString *)host MAC:(NSString *)mac MID:(NSString *)mid
+{
+    NSLog(@"❌ smtlkV20EventDiscover");
+    //    [smtlk sendATCMD:@"AT+WSCAN\r"];
+}
+
+-(void)smtlkV20EventDisconnected {
+    NSLog(@"❌ smtlkV20EventDisconnected");
+    [self->smtlkManager stopSmtlk];
+    sendReject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
+}
+
+-(void)smtlkV20CleanAPList {
+    NSLog(@"❌ smtlkV20CleanAPList");
+}
+
 
 @end

@@ -9,7 +9,8 @@
 #import "SmtlkV20.h"
 #import "GCDAsyncUdpSocket.h"
 #import "MFUtil.h"
-#define SMTLKUDPBCADD @"255.255.255.255"
+//10.10.100.254
+#define SMTLKUDPBCADD @"10.10.100.254"
 #define SMTLKUDPRMPORT 48899
 
 #define SMTLKDISCOVERY_DEFAULT      @"HF-A11ASSISTHREAD"
@@ -258,9 +259,6 @@
             //        }];
         }
     }
-
-    
-    
 }
 
 -(void)onEventState0:(NSString *)str
