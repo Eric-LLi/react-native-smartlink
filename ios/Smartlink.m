@@ -10,15 +10,15 @@
 
 static BOOL isConnecting = false;
 
-@interface Smartlink()<SmtlkManagerDelegate>{
+@interface Smartlink(){
     NSString *apSSID;
     NSString *currentSSID;
     NSString *currentPwd;
     HFSmartLink * smtlk;
     RCTPromiseResolveBlock sendResolve;
     RCTPromiseRejectBlock sendReject;
-    //    STDPingServices *pingServices;
     SmtlkManager *smtlkManager;
+    NSMutableArray *wscanList;
 }
 
 @end
@@ -32,6 +32,7 @@ NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
 NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
 NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat, please make sure turn your thermostat into AP mode...";
+NSString * const UNSUPPORTED_ROUTER_MSG = @"Unsupported router...Please connect to another router.";
 
 RCT_EXPORT_MODULE()
 
@@ -46,6 +47,7 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
     if([MFUtil isWiFiConnected]){
         if (@available(iOS 11.0, *)) {
             if([[self get_ssid] isEqualToString: self->apSSID]){
+                wscanList=[[NSMutableArray alloc] initWithCapacity:0];
                 self-> sendReject = reject;
                 self-> sendResolve = resolve;
                 self->smtlkManager = [SmtlkManager sharedManager];
@@ -116,6 +118,15 @@ RCT_EXPORT_METHOD(SL_StopConnect:
         }];
     } else {
         resolve(@YES);
+    }
+}
+
+RCT_EXPORT_METHOD(AP_StopConnect:
+                  (RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+    if(smtlkManager != nil){
+        [wscanList removeAllObjects];
+        [smtlkManager stopSmtlk];
     }
 }
 
@@ -258,6 +269,42 @@ RCT_REMAP_METHOD(Get_SSID,
 
 -(void)smtlkV20CleanAPList {
     NSLog(@"❌ smtlkV20CleanAPList");
+    [wscanList removeAllObjects];
+}
+
+-(void)smtlkV20ScanAPListDone {
+    NSLog(@"❌ smtlkV20ScanAPListDone");
+    //    BOOL checkExisted = false;
+    for (NSDictionary *item in wscanList) {
+        NSLog( @"AP List .... : %@", item );
+        if([item[@"ssid"] isEqualToString: currentSSID]){
+            //            checkExisted = true;
+            return;
+        }
+    }
+    [smtlkManager stopSmtlk];
+    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
+}
+
+-(void)smtlkV20ScanAPList:(NSArray *)apList isRefresh:(BOOL)isRefresh;
+{
+    NSLog(@"\n\tscanResult=%@, refresh=%@", @([apList count]), @(isRefresh));
+    if(isRefresh)
+    {
+        [wscanList removeAllObjects];
+    }
+    if(apList)
+    {
+        [apList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSDictionary *info = obj;
+            [wscanList addObject:info];
+        }];
+        
+        if([apList count] > 0)
+        {
+            //            [_tblWscanList reloadData];
+        }
+    }
 }
 
 

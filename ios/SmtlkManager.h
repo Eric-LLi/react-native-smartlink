@@ -42,8 +42,11 @@ typedef NS_ENUM(NSInteger, SmtlkCommand) {
 -(void)smtlkV20EventDiscover:(NSString *)host MAC:(NSString *)mac MID:(NSString *)mid;
 -(void)smtlkV20EventPingFailed;
 -(void)smtlkV20ScanAPList:(NSArray *)apList isRefresh:(BOOL) isRefresh;
+-(void)smtlkV20ScanAPListDone;
 -(void)smtlkV20CleanAPList;
 -(void)smtlkV20EventReConnected;
+-(void)smtlkV20EventDisconnected;
+
 @end
 
 @class GCDAsyncUdpSocket;

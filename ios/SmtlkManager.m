@@ -434,7 +434,7 @@ withFilterContext:(id)filterContext
             self.cmdStatus = SmtlkCmdStatus_AT_WSCAN;
             
             [self sendATCmd:@"AT+WSCAN\r\n" tag:SmtlkCommand_AT_WSCAN completion:^(BOOL result) {
-                
+                //                NSLog(@"👏👏👏 WSCAN :%d", result);
             }];
         }
         return;
@@ -498,8 +498,17 @@ withFilterContext:(id)filterContext
         // clean first.
         isRefresh = YES;
         [self.arrAP removeAllObjects];
-    }
-    else
+    }else if([sResult isEqualToString:(@"")]){
+        
+        // 主线程执行：
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
+            {
+                [self->_delegate smtlkV20ScanAPListDone];
+            }
+        });
+        return;
+    }else
     {
         isRefresh = NO;
     }
