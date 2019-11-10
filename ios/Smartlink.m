@@ -43,8 +43,8 @@ NSString * const NOT_SUPPORTED_DEVICE_MSG = @"Not supported in iOS<11.0...";
 NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
 NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
-NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat, please make sure to turn your thermostat into AP mode...";
-NSString * const UNSUPPORTED_ROUTER_MSG = @"Unsupported router...Please try another router.";
+NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat\n\nplease make sure to turn your thermostat into AP mode...";
+NSString * const UNSUPPORTED_ROUTER_MSG = @"Unsupported router...\n\nPlease try another router.";
 
 RCT_EXPORT_MODULE()
 

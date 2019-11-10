@@ -18,4 +18,6 @@ const { Smartlink } = NativeModules;
 
 //Connect_WiFi_Secure(ssid, pwd, bindNetwork, isWEP)
 
+//Remove_SSID(ssid)
+
 export default Smartlink;

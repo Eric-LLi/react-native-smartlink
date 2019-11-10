@@ -693,27 +693,30 @@ withFilterContext:(id)filterContext
         NSString * status = [self convertCmdStatus: cmdStatus];
         switch (code) {
             case INVALID_COMMAND_FORMAT:{
-                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid command format",status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nInvalid command format",status];
                 break;
             }
             case INVALID_COMMAND:{
-                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid command", status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nInvalid command", status];
                 break;
             }
             case INVALID_OPERATOR:{
-                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid operator", status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nInvalid operator", status];
                 break;
             }
             case INVALID_PARAMETER:{
-                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid input data", status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nInvalid data", status];
+                if(cmdStatus == SmtlkCmdStatus_AT_WSKEY){
+                    msg = [NSString stringWithFormat: @"Please check your rounter password"];
+                }
                 break;
             }
             case PROHIBITED_OPERATION:{
-                msg = [NSString stringWithFormat: @"Status: %@ \nOperation not allowed", status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nOperation not allowed", status];
                 break;
             }
             default:
-                msg = [NSString stringWithFormat: @"Status: %@ \nUnknow error", status];
+                msg = [NSString stringWithFormat: @"Status: %@ \n\nUnknow error", status];
                 break;
         }
         
