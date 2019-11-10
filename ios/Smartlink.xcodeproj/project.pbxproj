@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07287119237295F500F15A45 /* HFSmartLinkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287117237295F500F15A45 /* HFSmartLinkDeviceInfo.m */; };
-		0728711A237295F500F15A45 /* Udpproxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287118237295F500F15A45 /* Udpproxy.m */; };
 		0763A8F4236B0ADD00DF905F /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8D5236B0AD100DF905F /* libReact.a */; };
 		0763A8FB236B0D7400DF905F /* libsmartlinklib_v7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */; };
 		077E3A2023753834009D601B /* STDPingServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39D723753834009D601B /* STDPingServices.m */; };
@@ -23,14 +21,11 @@
 		077E3A2923753834009D601B /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39F123753834009D601B /* MASConstraint.m */; };
 		077E3A2A23753834009D601B /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39F323753834009D601B /* MASViewConstraint.m */; };
 		077E3A2B23753834009D601B /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39F423753834009D601B /* MASViewAttribute.m */; };
-		077E3A2C23753834009D601B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39F723753834009D601B /* Reachability.m */; };
-		077E3A2D23753834009D601B /* RHSocketConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39FA23753834009D601B /* RHSocketConnection.m */; };
 		077E3A2E23753834009D601B /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39FE23753834009D601B /* GCDAsyncUdpSocket.m */; };
 		077E3A2F23753834009D601B /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E39FF23753834009D601B /* GCDAsyncSocket.m */; };
 		077E3A3023753834009D601B /* SmtlkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E3A1323753834009D601B /* SmtlkManager.m */; };
 		077E3A3123753834009D601B /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 077E3A1823753834009D601B /* getgateway.c */; };
 		077E3A3223753834009D601B /* MFUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E3A1923753834009D601B /* MFUtil.m */; };
-		077E3A3423753834009D601B /* SmtlkV20.m in Sources */ = {isa = PBXBuildFile; fileRef = 077E3A1F23753834009D601B /* SmtlkV20.m */; };
 		2AE50EEB695C9427524879DF /* libPods-Smartlink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 393A9981275D1820D8160336 /* libPods-Smartlink.a */; };
 		B3E7B58A1CC2AC0600A0062D /* Smartlink.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Smartlink.m */; };
 /* End PBXBuildFile section */
@@ -163,10 +158,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		07287115237295F500F15A45 /* Udpproxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Udpproxy.h; path = Model/Udpproxy.h; sourceTree = "<group>"; };
-		07287116237295F500F15A45 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HFSmartLinkDeviceInfo.h; path = Model/HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
-		07287117237295F500F15A45 /* HFSmartLinkDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HFSmartLinkDeviceInfo.m; path = Model/HFSmartLinkDeviceInfo.m; sourceTree = "<group>"; };
-		07287118237295F500F15A45 /* Udpproxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Udpproxy.m; path = Model/Udpproxy.m; sourceTree = "<group>"; };
 		0763A8C1236B0AD000DF905F /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		0763A8F5236B0B1400DF905F /* HFSmartLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLink.h; sourceTree = SOURCE_ROOT; };
 		0763A8FA236B0D7400DF905F /* libsmartlinklib_v7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsmartlinklib_v7.a; sourceTree = "<group>"; };
@@ -200,11 +191,6 @@
 		077E39F323753834009D601B /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
 		077E39F423753834009D601B /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		077E39F523753834009D601B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		077E39F723753834009D601B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		077E39F823753834009D601B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		077E39FA23753834009D601B /* RHSocketConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHSocketConnection.m; sourceTree = "<group>"; };
-		077E39FB23753834009D601B /* RHSocketConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHSocketConfig.h; sourceTree = "<group>"; };
-		077E39FC23753834009D601B /* RHSocketConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHSocketConnection.h; sourceTree = "<group>"; };
 		077E39FE23753834009D601B /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		077E39FF23753834009D601B /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		077E3A0023753834009D601B /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
@@ -217,8 +203,7 @@
 		077E3A1923753834009D601B /* MFUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFUtil.m; sourceTree = "<group>"; };
 		077E3A1B23753834009D601B /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		077E3A1D23753834009D601B /* MFUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFUtil.h; sourceTree = "<group>"; };
-		077E3A1E23753834009D601B /* SmtlkV20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmtlkV20.h; sourceTree = "<group>"; };
-		077E3A1F23753834009D601B /* SmtlkV20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmtlkV20.m; sourceTree = "<group>"; };
+		07D6B8372378088F00249A87 /* HFSmartLinkDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFSmartLinkDeviceInfo.h; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libSmartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSmartlink.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		393A9981275D1820D8160336 /* libPods-Smartlink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smartlink.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		393A9E69746D2CC38EFE543B /* Pods-Smartlink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smartlink.release.xcconfig"; path = "Target Support Files/Pods-Smartlink/Pods-Smartlink.release.xcconfig"; sourceTree = "<group>"; };
@@ -241,17 +226,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0728710C237295C500F15A45 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				07287116237295F500F15A45 /* HFSmartLinkDeviceInfo.h */,
-				07287117237295F500F15A45 /* HFSmartLinkDeviceInfo.m */,
-				07287115237295F500F15A45 /* Udpproxy.h */,
-				07287118237295F500F15A45 /* Udpproxy.m */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
 		0763A8BE236B0A1600DF905F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,8 +263,6 @@
 			children = (
 				077E39D523753834009D601B /* ping */,
 				077E39DB23753834009D601B /* Masonry */,
-				077E39F623753834009D601B /* Reachability */,
-				077E39F923753834009D601B /* RHSocket */,
 				077E39FD23753834009D601B /* CocoaAsyncSocket */,
 			);
 			path = 3rd;
@@ -348,25 +320,6 @@
 			path = Masonry;
 			sourceTree = "<group>";
 		};
-		077E39F623753834009D601B /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				077E39F723753834009D601B /* Reachability.m */,
-				077E39F823753834009D601B /* Reachability.h */,
-			);
-			path = Reachability;
-			sourceTree = "<group>";
-		};
-		077E39F923753834009D601B /* RHSocket */ = {
-			isa = PBXGroup;
-			children = (
-				077E39FA23753834009D601B /* RHSocketConnection.m */,
-				077E39FB23753834009D601B /* RHSocketConfig.h */,
-				077E39FC23753834009D601B /* RHSocketConnection.h */,
-			);
-			path = RHSocket;
-			sourceTree = "<group>";
-		};
 		077E39FD23753834009D601B /* CocoaAsyncSocket */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,13 +363,11 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				07D6B8372378088F00249A87 /* HFSmartLinkDeviceInfo.h */,
 				077E39D423753834009D601B /* 3rd */,
 				077E3A1423753834009D601B /* common */,
 				077E3A1223753834009D601B /* SmtlkManager.h */,
 				077E3A1323753834009D601B /* SmtlkManager.m */,
-				077E3A1E23753834009D601B /* SmtlkV20.h */,
-				077E3A1F23753834009D601B /* SmtlkV20.m */,
-				0728710C237295C500F15A45 /* Model */,
 				0763A8BE236B0A1600DF905F /* Frameworks */,
 				0763A8F5236B0B1400DF905F /* HFSmartLink.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -644,8 +595,6 @@
 				077E3A2123753834009D601B /* STSimplePing.m in Sources */,
 				077E3A2623753834009D601B /* MASLayoutConstraint.m in Sources */,
 				077E3A2023753834009D601B /* STDPingServices.m in Sources */,
-				07287119237295F500F15A45 /* HFSmartLinkDeviceInfo.m in Sources */,
-				077E3A2D23753834009D601B /* RHSocketConnection.m in Sources */,
 				077E3A2B23753834009D601B /* MASViewAttribute.m in Sources */,
 				077E3A3023753834009D601B /* SmtlkManager.m in Sources */,
 				077E3A2723753834009D601B /* NSArray+MASAdditions.m in Sources */,
@@ -655,10 +604,7 @@
 				077E3A3123753834009D601B /* getgateway.c in Sources */,
 				077E3A2E23753834009D601B /* GCDAsyncUdpSocket.m in Sources */,
 				077E3A2823753834009D601B /* View+MASAdditions.m in Sources */,
-				077E3A3423753834009D601B /* SmtlkV20.m in Sources */,
-				077E3A2C23753834009D601B /* Reachability.m in Sources */,
 				077E3A2323753834009D601B /* ViewController+MASAdditions.m in Sources */,
-				0728711A237295F500F15A45 /* Udpproxy.m in Sources */,
 				077E3A2A23753834009D601B /* MASViewConstraint.m in Sources */,
 				077E3A2223753834009D601B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				077E3A2F23753834009D601B /* GCDAsyncSocket.m in Sources */,
