@@ -160,9 +160,9 @@ RCT_EXPORT_METHOD(AP_StopConnect:
         [smtlkManager stopSmtlk];
         [wscanList removeAllObjects];
         smtlkManager = nil;
-        apSSID = nil;
-        currentSSID = nil;
-        currentPwd = nil;
+//        apSSID = nil;
+//        currentSSID = nil;
+//        currentPwd = nil;
         startTime = nil;
         str = nil;
         inSSID = nil;
@@ -297,11 +297,15 @@ RCT_REMAP_METHOD(Get_SSID,
     //    [smtlk sendATCMD:@"AT+WSCAN\r"];
 }
 
--(void)smtlkV20EventDisconnected {
+-(void)smtlkV20EventDisconnected: (NSString *)errorMsg {
     NSLog(@"❌ smtlkV20EventDisconnected");
+    NSString *msg = UNABLE_CONNECT_THERMOSTAT_MSG;
+    if(errorMsg != nil){
+        msg = errorMsg;
+    }
     //    [self->smtlkManager stopSmtlk];
     //    sendReject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
-    [self ap_StopConnect:UNABLE_CONNECT_THERMOSTAT_MSG ];
+    [self ap_StopConnect:msg ];
 }
 
 -(void)smtlkV20CleanAPList {
@@ -363,8 +367,8 @@ RCT_REMAP_METHOD(Get_SSID,
             return;
         }
     }
-//    [smtlkManager stopSmtlk];
-//    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
+    //    [smtlkManager stopSmtlk];
+    //    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
     [self ap_StopConnect: UNSUPPORTED_ROUTER_MSG];
 }
 
@@ -384,5 +388,56 @@ RCT_REMAP_METHOD(Get_SSID,
     }
 }
 
+-(void)smtlkV20ScanWSSSID_Done {
+    NSLog(@"\n smtlkV20ScanWSSSID_Done");
+    
+    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSKEY;
+    
+    NSString *cmdWSKEY = @"";
+    
+    if ([str isEqualToString:@"WP"])
+    {
+        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=WPA2PSK,AES,%@\r", inKey];
+    }
+    else if ([str isEqualToString:@"WE"])
+    {
+        if (([inKey length]==5)||([inKey length]==13))
+            cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-A,%@\r", inKey];
+        else
+            cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-H,%@\r", inKey];
+    }
+    else
+    {
+        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=open,none\r"];
+    }
+    
+    [self->smtlkManager sendATCmd:cmdWSKEY tag:SmtlkCommand_AT_WSKEY completion:^(BOOL result) {
+        //
+    }];
+}
 
+-(void) smtlkV20ScanWSKEY_Done {
+    NSLog(@"\n smtlkV20ScanWSKEY_Done");
+    
+    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WMODE;
+    
+    NSString *cmdWMODE = [[NSString alloc] initWithFormat:@"AT+WMODE=sta\r"];
+    
+    [self->smtlkManager setDateATWMODE:[NSDate date]];
+    
+    [self->smtlkManager sendATCmd:cmdWMODE tag:SmtlkCommand_AT_WMODE completion:^(BOOL result) {
+        //
+    }];
+}
+-(void) smtlkV20ScanWMODE_Done {
+    NSLog(@"\n smtlkV20ScanWMODE_Done");
+    
+    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_Z;
+    
+    NSString *cmdZ = [[NSString alloc] initWithFormat:@"AT+Z\r"];
+    
+    [self->smtlkManager sendATCmd:cmdZ tag:SmtlkCommand_AT_Z completion:^(BOOL result) {
+        NSLog(@"\n SmtlkCmdStatus_AT_WMODE_Done");
+    }];
+}
 @end

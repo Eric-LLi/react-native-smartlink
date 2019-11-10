@@ -15,18 +15,23 @@
 #define SMTLKUDPBCADD @"10.10.100.254"
 
 #define SMTLKUDPRMPORT 48899
-#define TIMEOUT 60
+#define TIMEOUT 30
 #define SMTLKDISCOVERY_DEFAULT @"HF-A11ASSISTHREAD"
 #define PINGTIMOUT_MAXRETRY      5
 static SmtlkManager* _instance = nil;
-
+enum{
+    INVALID_COMMAND_FORMAT = -1,
+    INVALID_COMMAND = -2,
+    INVALID_OPERATOR = -3,
+    INVALID_PARAMETER = -4,
+    PROHIBITED_OPERATION = -5
+};
 @interface SmtlkManager()<GCDAsyncUdpSocketDelegate>
 {
     NSString *hostMAC;
     NSString *hostMID;
     NSString *udpHost;
     uint16_t udpLocalPort;
-    //    NSDate *startTime;
 }
 @property (nonatomic, retain) GCDAsyncUdpSocket *udpSockBroadCast;
 
@@ -237,7 +242,7 @@ static SmtlkManager* _instance = nil;
         double time = fabs([self.startTime timeIntervalSinceNow]);
         NSLog(@"\n⏰⏰⏰⏰ Time Dirrerence=%f", time);
         if(time > TIMEOUT){
-            [self.delegate smtlkV20EventDisconnected];
+            [self.delegate smtlkV20EventDisconnected: nil];
             return;
         }
         
@@ -325,7 +330,7 @@ static SmtlkManager* _instance = nil;
             handler(NO);
         }
     }
-    NSLog(@"\n🚀🚀🚀🚀 send=%@, tag: %ld", sCmd, (long)tag);
+    NSLog(@"\n🚀🚀🚀🚀 send = %@, tag = %ld", sCmd, (long)tag);
     NSData *sd= [sCmd dataUsingEncoding: NSASCIIStringEncoding];
     
     NSInteger timeout = -1;
@@ -400,7 +405,7 @@ withFilterContext:(id)filterContext
                    stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]];
     
     
-    NSLog(@"\n👋👋👋👋 UDPSocket.state=%@, resp:%@", @(self.cmdStatus), s);
+    NSLog(@"\n👋👋👋👋 UDPSocket.state = %@, resp = %@", @(self.cmdStatus), s);
     if(s && [s isEqualToString:@"+ok"])
     {
         // wmode has been done;
@@ -424,20 +429,62 @@ withFilterContext:(id)filterContext
     }
     if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WSCAN)
     {
-        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSCAN%@", s);
+        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSCAN = %@", s);
         [self parseWSCANResult:s];
         return;
     }
     if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WSSSID){
         NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSSSID = %@", s);
-        self.cmdStatus = SmtlkCmdStatus_AT_WSSSID_Done;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
-            {
-                [self->_delegate smtlkV20ScanAPListDone];
-            }
-        });
+        if(s && [s isEqualToString:@"+ok"]){
+            self.cmdStatus = SmtlkCmdStatus_AT_WSSSID_Done;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self->_delegate)
+                {
+                    [self->_delegate smtlkV20ScanWSSSID_Done];
+                }
+            });
+        } else if(s && [s containsString: @"+ERR"]){
+            NSArray *array = [s componentsSeparatedByString: @"="];
+            NSString *errorCode = array[array.count - 1 ];
+            [self onEventScanError:errorCode];
+        }
+        return;
+    }
+    if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WSKEY){
+        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSKEY = %@", s);
+        if(s && [s isEqualToString:@"+ok"]){
+            self.cmdStatus = SmtlkCmdStatus_AT_WSKEY_Done;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self->_delegate)
+                {
+                    [self->_delegate smtlkV20ScanWSKEY_Done];
+                }
+            });
+        } else if(s && [s containsString: @"+ERR"]){
+            NSArray *array = [s componentsSeparatedByString: @"="];
+            NSString *errorCode = array[array.count - 1 ];
+            [self onEventScanError:errorCode];
+        }
+        return;
+    }
+    if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WMODE){
+        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WMODE = %@", s);
+        if(s && [s isEqualToString:@"+ok"]){
+            self.cmdStatus = SmtlkCmdStatus_AT_WMODE_Done;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self->_delegate)
+                {
+                    [self->_delegate smtlkV20ScanWMODE_Done];
+                }
+            });
+        } else if(s && [s containsString: @"+ERR"]){
+            NSArray *array = [s componentsSeparatedByString: @"="];
+            NSString *errorCode = array[array.count - 1 ];
+            [self onEventScanError:errorCode];
+        }
         
         return;
     }
@@ -490,7 +537,8 @@ withFilterContext:(id)filterContext
         self.cmdStatus = SmtlkCmdStatus_AT_WSCAN_Done;
         // 主线程执行：
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
+            //            if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
+            if (self->_delegate)
             {
                 [self->_delegate smtlkV20ScanAPListDone];
             }
@@ -617,6 +665,40 @@ withFilterContext:(id)filterContext
         }
     });
     
+}
+
+-(void) onEventScanError: errorCode {
+    if(errorCode != nil){
+        int code = [errorCode intValue];
+        NSString *msg = @"";
+        switch (code) {
+            case INVALID_COMMAND_FORMAT:{
+                msg = @"Invalid command format";
+                break;
+            }
+            case INVALID_COMMAND:{
+                msg = @"Invalid command";
+                break;
+            }
+            case INVALID_OPERATOR:{
+                msg = @"Invalid operator";
+                break;
+            }
+            case INVALID_PARAMETER:{
+                msg = @"Invalid data (Please check your router password)";
+                break;
+            }
+            case PROHIBITED_OPERATION:{
+                msg = @"Operation not allowed";
+                break;
+            }
+            default:
+                msg = @"Unknow error";
+                break;
+        }
+        
+        [self.delegate smtlkV20EventDisconnected: msg];
+    }
 }
 
 @end

@@ -43,9 +43,13 @@ typedef NS_ENUM(NSInteger, SmtlkCommand) {
 -(void)smtlkV20EventPingFailed;
 -(void)smtlkV20ScanAPList:(NSArray *)apList isRefresh:(BOOL) isRefresh;
 -(void)smtlkV20ScanAPListDone;
+-(void)smtlkV20ScanWSSSID_Done;
+-(void)smtlkV20ScanWSKEY_Done;
+-(void)smtlkV20ScanWMODE_Done;
+
 -(void)smtlkV20CleanAPList;
 -(void)smtlkV20EventReConnected;
--(void)smtlkV20EventDisconnected;
+-(void)smtlkV20EventDisconnected: (NSString *)errorMsg;
 
 @end
 
