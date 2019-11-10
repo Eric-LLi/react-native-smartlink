@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, SmtlkCommand) {
 @property (nonatomic, assign) SmtlkCmdStatus cmdStatus;
 @property (nonatomic, weak) id<SmtlkManagerDelegate> delegate;
 @property (nonatomic, retain) NSDate *dateATWMODE;
-
+@property (nonatomic, retain) NSDate *startTime;
 
 + (id)sharedManager;
 -(void) startSmtlk;

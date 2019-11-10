@@ -5,20 +5,32 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
-//#import "SmtlkV20.h"
 #import "MFUtil.h"
 
 static BOOL isConnecting = false;
 
 @interface Smartlink(){
+    //FrontEnd Info
     NSString *apSSID;
     NSString *currentSSID;
     NSString *currentPwd;
-    HFSmartLink * smtlk;
+    
     RCTPromiseResolveBlock sendResolve;
     RCTPromiseRejectBlock sendReject;
+    
+    //SmartLink Instance
+    HFSmartLink * smtlk;
+    
+    //Advanced Link Instance
     SmtlkManager *smtlkManager;
     NSMutableArray *wscanList;
+    NSDate *startTime;
+    
+    //Send Command Router Info
+    NSString *str;
+    NSString *inSSID;
+    NSString *inKey;
+    NSString *cmdWSSSID;
 }
 
 @end
@@ -27,12 +39,12 @@ static BOOL isConnecting = false;
 
 NSString * const WIFI_DISCONNECTED_MSG = @"Please enable WiFi and connect to your router...";
 NSString * const TRY_AGAIN_MSG = @"Please try again...";
-NSString * const NOT_SUPPORTED_MSG = @"Not supported in iOS<11.0...";
+NSString * const NOT_SUPPORTED_DEVICE_MSG = @"Not supported in iOS<11.0...";
 NSString * const NOT_DETECTED_SSID_MSG = @"Cannot detect SSID...";
 NSString * const UNMATCH_AP_DEVICE_MSG = @"Connected to wroung AP...";
 NSString * const FAIL_SEND_CONFIG_MSG = @"Fail to send config request...";
-NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat, please make sure turn your thermostat into AP mode...";
-NSString * const UNSUPPORTED_ROUTER_MSG = @"Unsupported router...Please connect to another router.";
+NSString * const UNABLE_CONNECT_THERMOSTAT_MSG = @"Unable to connect thermostat, please make sure to turn your thermostat into AP mode...";
+NSString * const UNSUPPORTED_ROUTER_MSG = @"Unsupported router...Please try another router.";
 
 RCT_EXPORT_MODULE()
 
@@ -45,20 +57,26 @@ RCT_EXPORT_METHOD(AP_ConfigWiFi:(NSString *)ssid pwd:(NSString *)pwd
                   connectResolver:(RCTPromiseResolveBlock)resolve
                   connectRejecter:(RCTPromiseRejectBlock)reject){
     if([MFUtil isWiFiConnected]){
-        if (@available(iOS 11.0, *)) {
+        if ([self isIOS11OrNewer]) {
             if([[self get_ssid] isEqualToString: self->apSSID]){
+                isConnecting = true;
+                
+                self-> currentSSID = ssid;
+                self-> currentPwd = pwd;
+                
                 wscanList=[[NSMutableArray alloc] initWithCapacity:0];
-                self-> sendReject = reject;
-                self-> sendResolve = resolve;
+                self->sendReject = reject;
+                self->sendResolve = resolve;
                 self->smtlkManager = [SmtlkManager sharedManager];
                 self->smtlkManager.delegate = self;
+                self->smtlkManager.startTime = [NSDate date];
                 [self->smtlkManager startSmtlk];
                 
             } else {
                 reject(@"Error", UNMATCH_AP_DEVICE_MSG, nil);
             }
         } else {
-            reject(@"Error", NOT_SUPPORTED_MSG, nil);
+            reject(@"Error", NOT_SUPPORTED_DEVICE_MSG, nil);
         }
     }else{
         reject(@"Error", WIFI_DISCONNECTED_MSG, nil);
@@ -110,7 +128,6 @@ RCT_EXPORT_METHOD(SL_StopConnect:
     if(smtlk != nil && isConnecting){
         [smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
             if(isOk){
-                isConnecting  = false;
                 resolve(@YES);
             }else{
                 reject(@"Error", stopMsg, nil);
@@ -119,25 +136,48 @@ RCT_EXPORT_METHOD(SL_StopConnect:
     } else {
         resolve(@YES);
     }
+    smtlk = nil;
+    isConnecting  = false;
+    sendResolve = nil;
+    sendReject = nil;
 }
 
 RCT_EXPORT_METHOD(AP_StopConnect:
                   (RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject){
-    if(smtlkManager != nil){
-        [wscanList removeAllObjects];
-        [smtlkManager stopSmtlk];
+    if([self ap_StopConnect: nil]){
+        resolve(@YES);
+    } else {
+        resolve(@NO);
     }
+}
+- (NSNumber *) ap_StopConnect: (NSString*) errorMsg{
+    if(smtlkManager != nil && isConnecting){
+        if(errorMsg!= nil){
+            sendReject(@"Error", errorMsg, nil);
+        }
+        isConnecting = false;
+        [smtlkManager stopSmtlk];
+        [wscanList removeAllObjects];
+        smtlkManager = nil;
+        apSSID = nil;
+        currentSSID = nil;
+        currentPwd = nil;
+        startTime = nil;
+        str = nil;
+        inSSID = nil;
+        inKey = nil;
+        cmdWSSSID = nil;
+        sendResolve = nil;
+        sendReject = nil;
+    }
+    return @YES;
 }
 
 RCT_EXPORT_METHOD(isAvailableConnectWiFi:
                   (RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    NSNumber *available = @NO;
-    if (@available(iOS 11.0, *)) {
-        available = @YES;
-    }
-    resolve(available);
+    resolve([self isIOS11OrNewer]);
 }
 
 RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
@@ -145,7 +185,7 @@ RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
                   connectResolver:(RCTPromiseResolveBlock)resolve
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
-    if (@available(iOS 11.0, *)) {
+    if ([self isIOS11OrNewer]) {
         if([MFUtil isWiFiConnected]){
             currentSSID = ssid;
             currentPwd = passphrase;
@@ -167,7 +207,7 @@ RCT_EXPORT_METHOD(Connect_WiFi_Secure:(NSString*)ssid
             reject(@"Error", WIFI_DISCONNECTED_MSG, nil);
         }
     } else {
-        reject(@"Error", NOT_SUPPORTED_MSG, nil);
+        reject(@"Error", NOT_SUPPORTED_DEVICE_MSG, nil);
     }
 }
 
@@ -175,7 +215,7 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
                   connectResolver:(RCTPromiseResolveBlock)resolve
                   connectRejecter:(RCTPromiseRejectBlock)reject)
 {
-    if (@available(iOS 11.0, *)) {
+    if ([self isIOS11OrNewer]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
             configuration.joinOnce = false;
@@ -205,7 +245,7 @@ RCT_EXPORT_METHOD(Connect_WiFi:(NSString*)ssid
             }];
         });
     } else {
-        reject(@"Error", NOT_SUPPORTED_MSG, nil);
+        reject(@"Error", NOT_SUPPORTED_DEVICE_MSG, nil);
     }
 }
 
@@ -237,53 +277,95 @@ RCT_REMAP_METHOD(Get_SSID,
     return ssid;
 }
 
-//- (BOOL) isWiFiEnabled {
-//    NSCountedSet * cset = [[NSCountedSet alloc] init];
-//    struct ifaddrs *interfaces;
-//    if( ! getifaddrs(&interfaces) ) {
-//        for( struct ifaddrs *interface = interfaces; interface; interface = interface->ifa_next) {
-//            if ( (interface->ifa_flags & IFF_UP) == IFF_UP ) {
-//                [cset addObject:[NSString stringWithUTF8String:interface->ifa_name]];
-//            }
-//        }
-//    }
-//    return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
-//}
+- (NSNumber *) isIOS11OrNewer {
+    NSNumber *available = @NO;
+    if (@available(iOS 11.0, *)) {
+        available = @YES;
+    }
+    return available;
+}
+
 #pragma mark - delegate
 -(void)smtlkV20Event:(BOOL)success wscanSSid:(NSString *)ssid mac:(NSString *)mac security:(NSString *)secu{
-    NSLog(@"❌ smtlkV20Event");
+    NSLog(@" smtlkV20Event");
 }
 
 /*发送AT+WSCAN命令后的返回，每条返回包括搜到的一个路由器的SSID、MAC、加密方式*/
 -(void)smtlkV20EventDiscover:(NSString *)host MAC:(NSString *)mac MID:(NSString *)mid
 {
-    NSLog(@"❌ smtlkV20EventDiscover");
+    NSLog(@" smtlkV20EventDiscover");
     //    [smtlk sendATCMD:@"AT+WSCAN\r"];
 }
 
 -(void)smtlkV20EventDisconnected {
     NSLog(@"❌ smtlkV20EventDisconnected");
-    [self->smtlkManager stopSmtlk];
-    sendReject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
+    //    [self->smtlkManager stopSmtlk];
+    //    sendReject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
+    [self ap_StopConnect:UNABLE_CONNECT_THERMOSTAT_MSG ];
 }
 
 -(void)smtlkV20CleanAPList {
-    NSLog(@"❌ smtlkV20CleanAPList");
+    NSLog(@" smtlkV20CleanAPList");
     [wscanList removeAllObjects];
 }
 
 -(void)smtlkV20ScanAPListDone {
-    NSLog(@"❌ smtlkV20ScanAPListDone");
-    //    BOOL checkExisted = false;
+    NSLog(@" smtlkV20ScanAPListDone");
     for (NSDictionary *item in wscanList) {
         NSLog( @"AP List .... : %@", item );
+        NSLog( @"AP SSID .... : %@", item[@"ssid"] );
         if([item[@"ssid"] isEqualToString: currentSSID]){
-            //            checkExisted = true;
+            [self->smtlkManager startListenerForATWMODE];
+            
+            str=[item[@"security"] substringWithRange:NSMakeRange(0, 2)];
+            inSSID = self->currentSSID ? self->currentSSID : @"";
+            inKey = self->currentPwd ? self->currentPwd : @"";
+            cmdWSSSID = [[NSString alloc] initWithFormat:@"AT+WSSSID=%@\r", inSSID];
+            
+            self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSSSID;
+            [self->smtlkManager sendATCmd:cmdWSSSID tag:SmtlkCommand_AT_WSSSID completion:^(BOOL result) {
+                //                self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSSSID_Done;
+                //                NSString *cmdWSKEY = @"";
+                //
+                //                if ([str isEqualToString:@"WP"])
+                //                {
+                //                    cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=wpa2psk,aes,%@\r", inKey];
+                //                }
+                //                else if ([str isEqualToString:@"WE"])
+                //                {
+                //                    if (([inKey length]==5)||([inKey length]==13))
+                //                        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-A,%@\r", inKey];
+                //                    else
+                //                        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-H,%@\r", inKey];
+                //                }
+                //                else
+                //                {
+                //                    cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=open,none\r"];
+                //                }
+                //                self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSKEY;
+                //                [self->smtlkManager sendATCmd:cmdWSKEY tag:SmtlkCommand_AT_WSKEY completion:^(BOOL result) {
+                //                    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSKEY_Done;
+                //                    NSString *cmdWMODE = [[NSString alloc] initWithFormat:@"AT+WMODE=sta\r"];
+                //
+                //                    [self->smtlkManager setDateATWMODE:[NSDate date]];
+                //                    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WMODE;
+                //                    [self->smtlkManager sendATCmd:cmdWMODE tag:SmtlkCommand_AT_WMODE completion:^(BOOL result) {
+                //                        self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WMODE_Done;
+                //                        NSString *cmdZ = [[NSString alloc] initWithFormat:@"AT+Z\r"];
+                //                        self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_Z;
+                //                        [self->smtlkManager sendATCmd:cmdZ tag:SmtlkCommand_AT_Z completion:^(BOOL result) {
+                //                            NSLog(@"SmtlkCommand_AT_Z");
+                //                        }];
+                //                    }];
+                //
+                //                }];
+            }];
             return;
         }
     }
-    [smtlkManager stopSmtlk];
-    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
+//    [smtlkManager stopSmtlk];
+//    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
+    [self ap_StopConnect: UNSUPPORTED_ROUTER_MSG];
 }
 
 -(void)smtlkV20ScanAPList:(NSArray *)apList isRefresh:(BOOL)isRefresh;
@@ -299,11 +381,6 @@ RCT_REMAP_METHOD(Get_SSID,
             NSDictionary *info = obj;
             [wscanList addObject:info];
         }];
-        
-        if([apList count] > 0)
-        {
-            //            [_tblWscanList reloadData];
-        }
     }
 }
 

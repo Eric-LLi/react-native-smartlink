@@ -26,7 +26,7 @@ static SmtlkManager* _instance = nil;
     NSString *hostMID;
     NSString *udpHost;
     uint16_t udpLocalPort;
-    NSDate *startedTime;
+    //    NSDate *startTime;
 }
 @property (nonatomic, retain) GCDAsyncUdpSocket *udpSockBroadCast;
 
@@ -63,14 +63,16 @@ static SmtlkManager* _instance = nil;
             [[NSUserDefaults standardUserDefaults] setObject:SMTLKUDPBCADD forKey:@"kUDPBCAddr"];
             
         }
-        _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
+        //        _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
+        _udpBCAddr = SMTLKUDPBCADD;
         
         if(![[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPRMPort"])
         {
             [[NSUserDefaults standardUserDefaults] setValue:@(SMTLKUDPRMPORT) forKey:@"kUDPRMPort"];
             
         }
-        _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
+        //        _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
+        _udpRMPort = SMTLKUDPRMPORT;
         
         if(![[NSUserDefaults standardUserDefaults] objectForKey:@"kCMDDiscovery"])
         {
@@ -89,16 +91,24 @@ static SmtlkManager* _instance = nil;
     [[NSUserDefaults standardUserDefaults] setValue:@(SMTLKUDPRMPORT) forKey:@"kUDPRMPort"];
     [[NSUserDefaults standardUserDefaults] setObject:SMTLKDISCOVERY_DEFAULT forKey:@"kCMDDiscovery"];
     
-    _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
-    _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
-    _cmdDiscovery = [[NSUserDefaults standardUserDefaults] valueForKey:@"kCMDDiscovery"];
+    //    _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
+    //    _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
+    //    _cmdDiscovery = [[NSUserDefaults standardUserDefaults] valueForKey:@"kCMDDiscovery"];
+    
+    _udpBCAddr = SMTLKUDPBCADD;
+    _udpRMPort = SMTLKUDPRMPORT;
+    _cmdDiscovery = SMTLKDISCOVERY_DEFAULT;
 }
 
 -(void) reloadUDPArgs
 {
-    _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
-    _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
-    _cmdDiscovery = [[NSUserDefaults standardUserDefaults] valueForKey:@"kCMDDiscovery"];
+    _udpBCAddr = SMTLKUDPBCADD;
+    _udpRMPort = SMTLKUDPRMPORT;
+    _cmdDiscovery = SMTLKDISCOVERY_DEFAULT;
+    
+    //    _udpBCAddr = [[NSUserDefaults standardUserDefaults] objectForKey:@"kUDPBCAddr"];
+    //    _udpRMPort = [[[NSUserDefaults standardUserDefaults] valueForKey:@"kUDPRMPort"] integerValue];
+    //    _cmdDiscovery = [[NSUserDefaults standardUserDefaults] valueForKey:@"kCMDDiscovery"];
 }
 
 -(void) restartSmtlk
@@ -109,7 +119,6 @@ static SmtlkManager* _instance = nil;
 
 -(void) startSmtlk
 {
-    self->startedTime = [NSDate date];
     [self reloadUDPArgs];
     if(_timer)
     {
@@ -123,10 +132,7 @@ static SmtlkManager* _instance = nil;
         self.timerForWMode = nil;
     }
     // Peter: code for UDP
-    self.udpSockBroadCast = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
-                                                          delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-    
-    
+    self.udpSockBroadCast = [[GCDAsyncUdpSocket alloc] initWithDelegate:self      delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
     
     NSError *error = nil;
     
@@ -213,13 +219,8 @@ static SmtlkManager* _instance = nil;
     NSLog(@"send:%@", _cmdDiscovery);
     sd = [_cmdDiscovery dataUsingEncoding: NSASCIIStringEncoding];
     
-    //    [self.udpSockBroadCast sendData:sd
-    //                             toHost:_udpBCAddr
-    //                               port:_udpRMPort
-    //                        withTimeout:-1
-    //                                tag:SmtlkCommand_DISCOVERY];
     [self.udpSockBroadCast sendData:sd
-                             toHost:SMTLKUDPBCADD
+                             toHost:_udpBCAddr
                                port:_udpRMPort
                         withTimeout:-1
                                 tag:SmtlkCommand_DISCOVERY];
@@ -229,11 +230,16 @@ static SmtlkManager* _instance = nil;
 {
     WS(ws);
     NSTimeInterval period = 3.0; //设置时间间隔
-    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_source_t timerOne = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     dispatch_source_set_timer(timerOne, dispatch_walltime(NULL, 0), period * NSEC_PER_SEC, 0); //每period秒执行
     dispatch_source_set_event_handler(timerOne, ^{
+        double time = fabs([self.startTime timeIntervalSinceNow]);
+        NSLog(@"\n⏰⏰⏰⏰ Time Dirrerence=%f", time);
+        if(time > TIMEOUT){
+            [self.delegate smtlkV20EventDisconnected];
+            return;
+        }
         
         if([MFUtil isWiFiConnected] && [MFUtil routerIp])
         {
@@ -280,21 +286,9 @@ static SmtlkManager* _instance = nil;
                                         
                                         if(ws.pingTimeoutRetry >= PINGTIMOUT_MAXRETRY)
                                         {
-                                            //                                             ws.pingTimeoutRetry = 0;
-                                            //                                             ws.inCommandMode = NO;
-                                            //                                             udpHost = nil;
-                                            
-                                            
                                             ws.pingServices = nil;
                                             
                                             [ws restartSmtlk];
-                                            //                                             [ws.arrAP removeAllObjects];
-                                            
-                                            //                                             if(ws.delegate
-                                            //                                                && [ws.delegate respondsToSelector:@selector(smtlkV20EventPingFailed)])
-                                            //                                             {
-                                            //                                                 [ws.delegate smtlkV20EventPingFailed];
-                                            //                                             }
                                         }
                                     }
                                 }
@@ -311,14 +305,9 @@ static SmtlkManager* _instance = nil;
                             }
                         }];
                     });
-                    
                 }
             }
-            
-            //
-            
         }
-        
     });
     
     dispatch_resume(timerOne);
@@ -336,7 +325,7 @@ static SmtlkManager* _instance = nil;
             handler(NO);
         }
     }
-    NSLog(@"send:%@", sCmd);
+    NSLog(@"\n🚀🚀🚀🚀 send=%@, tag: %ld", sCmd, (long)tag);
     NSData *sd= [sCmd dataUsingEncoding: NSASCIIStringEncoding];
     
     NSInteger timeout = -1;
@@ -386,14 +375,9 @@ static SmtlkManager* _instance = nil;
                             }
                         });
                     });
-                    
                 });
-                
             }
-            
         }
-        
-        
     });
     
     dispatch_resume(timerOne);
@@ -416,13 +400,12 @@ withFilterContext:(id)filterContext
                    stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]];
     
     
-    NSLog(@"👏👏👏 udpSocket.state=%@, resp:%@", @(self.cmdStatus), s);
+    NSLog(@"\n👋👋👋👋 UDPSocket.state=%@, resp:%@", @(self.cmdStatus), s);
     if(s && [s isEqualToString:@"+ok"])
     {
         // wmode has been done;
         [self setDateATWMODE:[NSDate date]];
     }
-    
     if([sock isEqual:self.udpSockBroadCast] &&  self.cmdStatus == SmtlkCmdStatus_ASSISTHREAD)
     {
         // 成功进入命令行
@@ -434,30 +417,42 @@ withFilterContext:(id)filterContext
             self.cmdStatus = SmtlkCmdStatus_AT_WSCAN;
             
             [self sendATCmd:@"AT+WSCAN\r\n" tag:SmtlkCommand_AT_WSCAN completion:^(BOOL result) {
-                //                NSLog(@"👏👏👏 WSCAN :%d", result);
+                //
             }];
         }
         return;
     }
-    
     if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WSCAN)
     {
-        NSLog(@"\n%@", [MFUtil hexStringFromString:s]);
-        
+        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSCAN%@", s);
         [self parseWSCANResult:s];
+        return;
+    }
+    if([sock isEqual:self.udpSockBroadCast] && self.cmdStatus == SmtlkCmdStatus_AT_WSSSID){
+        NSLog(@"\n👋👋👋👋 SmtlkCmdStatus_AT_WSSSID = %@", s);
+        self.cmdStatus = SmtlkCmdStatus_AT_WSSSID_Done;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
+            {
+                [self->_delegate smtlkV20ScanAPListDone];
+            }
+        });
+        
+        return;
     }
 }
 
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didConnectToAddress:(NSData *)address
 {
-    
+    NSLog(@"✅ address=%@", address);
 }
 
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError * _Nullable)error
 {
-    NSLog(@"❌ error=%@", error);
+    NSLog(@"❌❌ error=%@", error);
     
 }
 
@@ -475,15 +470,7 @@ withFilterContext:(id)filterContext
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError  * _Nullable)error
 {
-    NSLog(@"❌ close, error=%@", error);
-    NSDate *date = [NSDate date];
-    //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //    [formatter setDateFormat:@"HH:mm:ss"];
-    double time = [date timeIntervalSinceDate:startedTime];
-    NSLog(@"❌ Time Dirrerence=%f", time);
-    if(time > TIMEOUT){
-        [self.delegate smtlkV20EventDisconnected];
-    }
+    NSLog(@"❌❌❌❌ close, error=%@", error);
 }
 
 #pragma mark - data handler
@@ -500,6 +487,7 @@ withFilterContext:(id)filterContext
         [self.arrAP removeAllObjects];
     }else if([sResult isEqualToString:(@"")]){
         
+        self.cmdStatus = SmtlkCmdStatus_AT_WSCAN_Done;
         // 主线程执行：
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self->_delegate && [self->_delegate respondsToSelector:@selector(smtlkV20ScanAPList:isRefresh:)])
@@ -586,20 +574,13 @@ withFilterContext:(id)filterContext
                     [self.delegate smtlkV20ScanAPList:arrThisAP isRefresh:isRefresh];
                 }
             });
-            
-            
         }
-        
     }
     else
     {
         NSLog(@"Nothing");
     }
-    
-    //        self.cmdStatus = SmtlkCmdStatus_AT_WSCAN_Done;
-    //        [self onEventGetList:s];
     return;
-    
 }
 
 -(void)onEventDiscovery:(NSString *)str
