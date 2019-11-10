@@ -447,7 +447,7 @@ withFilterContext:(id)filterContext
         } else if(s && [s containsString: @"+ERR"]){
             NSArray *array = [s componentsSeparatedByString: @"="];
             NSString *errorCode = array[array.count - 1 ];
-            [self onEventScanError:errorCode];
+            [self onEventScanError:errorCode cmdStatus:self.cmdStatus];
         }
         return;
     }
@@ -465,7 +465,7 @@ withFilterContext:(id)filterContext
         } else if(s && [s containsString: @"+ERR"]){
             NSArray *array = [s componentsSeparatedByString: @"="];
             NSString *errorCode = array[array.count - 1 ];
-            [self onEventScanError:errorCode];
+            [self onEventScanError:errorCode cmdStatus:self.cmdStatus];
         }
         return;
     }
@@ -483,7 +483,7 @@ withFilterContext:(id)filterContext
         } else if(s && [s containsString: @"+ERR"]){
             NSArray *array = [s componentsSeparatedByString: @"="];
             NSString *errorCode = array[array.count - 1 ];
-            [self onEventScanError:errorCode];
+            [self onEventScanError:errorCode cmdStatus:self.cmdStatus];
         }
         
         return;
@@ -666,34 +666,54 @@ withFilterContext:(id)filterContext
     });
     
 }
-
--(void) onEventScanError: errorCode {
+-(NSString *) convertCmdStatus: (SmtlkCmdStatus)cmd {
+    NSString *status = @"Unknown";
+    switch (cmd) {
+        case SmtlkCmdStatus_AT_WSSSID:{
+            status = @"Router SSID";
+            break;
+        }
+        case SmtlkCmdStatus_AT_WSKEY:{
+            status = @"Router password";
+            break;
+        }
+        case SmtlkCmdStatus_AT_WMODE:{
+            status = @"AT Mode";
+            break;
+        }
+        default:
+            break;
+    }
+    return status;
+}
+-(void) onEventScanError: errorCode cmdStatus:(SmtlkCmdStatus)cmdStatus {
     if(errorCode != nil){
         int code = [errorCode intValue];
         NSString *msg = @"";
+        NSString * status = [self convertCmdStatus: cmdStatus];
         switch (code) {
             case INVALID_COMMAND_FORMAT:{
-                msg = @"Invalid command format";
+                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid command format",status];
                 break;
             }
             case INVALID_COMMAND:{
-                msg = @"Invalid command";
+                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid command", status];
                 break;
             }
             case INVALID_OPERATOR:{
-                msg = @"Invalid operator";
+                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid operator", status];
                 break;
             }
             case INVALID_PARAMETER:{
-                msg = @"Invalid data (Please check your router password)";
+                msg = [NSString stringWithFormat: @"Status: %@ \nInvalid input data", status];
                 break;
             }
             case PROHIBITED_OPERATION:{
-                msg = @"Operation not allowed";
+                msg = [NSString stringWithFormat: @"Status: %@ \nOperation not allowed", status];
                 break;
             }
             default:
-                msg = @"Unknow error";
+                msg = [NSString stringWithFormat: @"Status: %@ \nUnknow error", status];
                 break;
         }
         

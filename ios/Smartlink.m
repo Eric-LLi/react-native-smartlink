@@ -151,28 +151,7 @@ RCT_EXPORT_METHOD(AP_StopConnect:
         resolve(@NO);
     }
 }
-- (NSNumber *) ap_StopConnect: (NSString*) errorMsg{
-    if(smtlkManager != nil && isConnecting){
-        if(errorMsg!= nil){
-            sendReject(@"Error", errorMsg, nil);
-        }
-        isConnecting = false;
-        [smtlkManager stopSmtlk];
-        [wscanList removeAllObjects];
-        smtlkManager = nil;
-//        apSSID = nil;
-//        currentSSID = nil;
-//        currentPwd = nil;
-        startTime = nil;
-        str = nil;
-        inSSID = nil;
-        inKey = nil;
-        cmdWSSSID = nil;
-        sendResolve = nil;
-        sendReject = nil;
-    }
-    return @YES;
-}
+
 
 RCT_EXPORT_METHOD(isAvailableConnectWiFi:
                   (RCTPromiseResolveBlock)resolve
@@ -261,6 +240,45 @@ RCT_REMAP_METHOD(Get_SSID,
     }
 }
 
+RCT_EXPORT_METHOD(Remove_SSID:(NSString*)apssid
+                  connectResolver:(RCTPromiseResolveBlock)resolve
+                  connectRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if([self isIOS11OrNewer]){
+        [[NEHotspotConfigurationManager sharedManager] getConfiguredSSIDsWithCompletionHandler:^(NSArray<NSString *> *ssids) {
+            if (ssids != nil && [ssids indexOfObject:apssid] != NSNotFound) {
+                [[NEHotspotConfigurationManager sharedManager] removeConfigurationForSSID:apssid];
+            }
+            resolve(@YES);
+        }];
+    } else {
+        reject(@"Error", NOT_SUPPORTED_DEVICE_MSG, nil);
+    }
+}
+
+- (NSNumber *) ap_StopConnect: (NSString*) errorMsg{
+    if(smtlkManager != nil && isConnecting){
+        if(errorMsg!= nil){
+            sendReject(@"Error", errorMsg, nil);
+        }
+        isConnecting = false;
+        [smtlkManager stopSmtlk];
+        [wscanList removeAllObjects];
+        smtlkManager = nil;
+        //        apSSID = nil;
+        //        currentSSID = nil;
+        //        currentPwd = nil;
+        startTime = nil;
+        str = nil;
+        inSSID = nil;
+        inKey = nil;
+        cmdWSSSID = nil;
+        sendResolve = nil;
+        sendReject = nil;
+    }
+    return @YES;
+}
+
 - (NSString *) get_ssid {
     NSString *ssid = nil;
     
@@ -303,8 +321,6 @@ RCT_REMAP_METHOD(Get_SSID,
     if(errorMsg != nil){
         msg = errorMsg;
     }
-    //    [self->smtlkManager stopSmtlk];
-    //    sendReject(@"Error", UNABLE_CONNECT_THERMOSTAT_MSG, nil);
     [self ap_StopConnect:msg ];
 }
 
@@ -328,47 +344,12 @@ RCT_REMAP_METHOD(Get_SSID,
             
             self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSSSID;
             [self->smtlkManager sendATCmd:cmdWSSSID tag:SmtlkCommand_AT_WSSSID completion:^(BOOL result) {
-                //                self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSSSID_Done;
-                //                NSString *cmdWSKEY = @"";
                 //
-                //                if ([str isEqualToString:@"WP"])
-                //                {
-                //                    cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=wpa2psk,aes,%@\r", inKey];
-                //                }
-                //                else if ([str isEqualToString:@"WE"])
-                //                {
-                //                    if (([inKey length]==5)||([inKey length]==13))
-                //                        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-A,%@\r", inKey];
-                //                    else
-                //                        cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=SHARED,WEP-H,%@\r", inKey];
-                //                }
-                //                else
-                //                {
-                //                    cmdWSKEY = [[NSString alloc] initWithFormat:@"AT+WSKEY=open,none\r"];
-                //                }
-                //                self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSKEY;
-                //                [self->smtlkManager sendATCmd:cmdWSKEY tag:SmtlkCommand_AT_WSKEY completion:^(BOOL result) {
-                //                    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WSKEY_Done;
-                //                    NSString *cmdWMODE = [[NSString alloc] initWithFormat:@"AT+WMODE=sta\r"];
-                //
-                //                    [self->smtlkManager setDateATWMODE:[NSDate date]];
-                //                    self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WMODE;
-                //                    [self->smtlkManager sendATCmd:cmdWMODE tag:SmtlkCommand_AT_WMODE completion:^(BOOL result) {
-                //                        self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_WMODE_Done;
-                //                        NSString *cmdZ = [[NSString alloc] initWithFormat:@"AT+Z\r"];
-                //                        self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_Z;
-                //                        [self->smtlkManager sendATCmd:cmdZ tag:SmtlkCommand_AT_Z completion:^(BOOL result) {
-                //                            NSLog(@"SmtlkCommand_AT_Z");
-                //                        }];
-                //                    }];
-                //
-                //                }];
             }];
             return;
         }
     }
-    //    [smtlkManager stopSmtlk];
-    //    sendReject(@"Error", UNSUPPORTED_ROUTER_MSG, nil);
+    
     [self ap_StopConnect: UNSUPPORTED_ROUTER_MSG];
 }
 
@@ -434,10 +415,12 @@ RCT_REMAP_METHOD(Get_SSID,
     
     self->smtlkManager.cmdStatus = SmtlkCmdStatus_AT_Z;
     
-    NSString *cmdZ = [[NSString alloc] initWithFormat:@"AT+Z\r"];
+    NSString *cmdZ = [[NSString alloc] initWithFormat:@"AT+Z\r\n"];
     
     [self->smtlkManager sendATCmd:cmdZ tag:SmtlkCommand_AT_Z completion:^(BOOL result) {
         NSLog(@"\n SmtlkCmdStatus_AT_WMODE_Done");
+        self->sendResolve(@YES);
+        [self ap_StopConnect:nil];
     }];
 }
 @end
