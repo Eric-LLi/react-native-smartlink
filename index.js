@@ -2,22 +2,51 @@ import { NativeModules } from 'react-native';
 
 const { Smartlink } = NativeModules;
 
-//SL_Connect(ssid, pwd)
+class Index{
+    constructor(){
+        //
+    }
 
-//AP_Connect(ssid ,pwd ,apssid, appwd)
+    SL_Connect = (ssid, pwd) => {
+        return Smartlink.SL_Connect(ssid, pwd);
+    }
 
-//SL_StopConnect()
+    AP_Connect = (ssid ,pwd ,apssid, appwd) => {
+        return Smartlink.AP_Connect(ssid ,pwd ,apssid, appwd);
+    }
+    
+    SL_StopConnect = () => {
+        return Smartlink.SL_StopConnect();
+    }
+    
+    AP_StopConnect = () => {
+        return Smartlink.AP_StopConnect();
+    }
 
-//AP_StopConnect()
+    IsAvailableConnectWiFi = () => {
+        return Smartlink.IsAvailableConnectWiFi();
+    }
 
-//isAvailableConnectWiFi()
+    Get_SSID = () => {
+        return Smartlink.Get_SSID();
+    }
+    
+    Connect_WiFi = (ssid) => {
+        return Smartlink.Connect_WiFi(ssid);
+    }
 
-//Get_SSID()
+    Connect_WiFi_Secure = (ssid, pwd, bindNetwork, isWEP) => {
+        return Smartlink.Connect_WiFi_Secure(ssid, pwd, bindNetwork, isWEP);
+    }
 
-//Connect_WiFi(ssid)
+    Remove_SSID = (ssid) => {
+        return Smartlink.Remove_SSID(ssid);
+    }
 
-//Connect_WiFi_Secure(ssid, pwd, bindNetwork, isWEP)
+    AP_ConfigWiFi = (ssid, pwd) => {
+        return Smartlink.AP_ConfigWiFi(ssid, pwd);
+    }
+}
 
-//Remove_SSID(ssid)
-
-export default Smartlink;
+// export default Smartlink;
+export default new Index();

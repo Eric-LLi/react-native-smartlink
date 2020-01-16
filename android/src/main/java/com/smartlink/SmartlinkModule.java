@@ -26,16 +26,18 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 class FailureCodes {
-	static int SYSTEM_ADDED_CONFIG_EXISTS = 1;
-	static int FAILED_TO_CONNECT = 2;
-	static int FAILED_TO_ADD_CONFIG = 3;
-	static int FAILED_TO_BIND_CONFIG = 4;
+	final static int SYSTEM_ADDED_CONFIG_EXISTS = 1;
+	final static int FAILED_TO_CONNECT = 2;
+	final static int FAILED_TO_ADD_CONFIG = 3;
+	final static int FAILED_TO_BIND_CONFIG = 4;
 }
 
 class EventName {
-	static String SL_CONNECT = "SL_Connect";
-	static String AP_CONNECT = "AP_Connect";
+	final static String SL_CONNECT = "SL_Connect";
+	final static String AP_CONNECT = "AP_Connect";
 }
 
 public class SmartlinkModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
@@ -51,7 +53,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 	private static String currentSSID;
 	private static String currentPwd;
 
-	public SmartlinkModule(ReactApplicationContext reactContext) {
+	SmartlinkModule(ReactApplicationContext reactContext) {
 		super(reactContext);
 		this.reactContext = reactContext;
 		wifiManager = (WifiManager) getReactApplicationContext().getApplicationContext()
@@ -126,7 +128,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 				if (ssid != null && ssid.equalsIgnoreCase(expectedSSID)) {
 					return true;
 				}
-				Thread.sleep(1000);
+				Thread.sleep(5000);
 			}
 		} catch (InterruptedException e) {
 			return false;
@@ -137,7 +139,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 	private String getWifiSSID() {
 		WifiInfo info = wifiManager.getConnectionInfo();
 		String ssid = info.getSSID();
-
+		Log.e("SSID", ssid);
 		if (ssid == null || ssid.equalsIgnoreCase("<unknown ssid>")) {
 			NetworkInfo nInfo = connectivityManager.getActiveNetworkInfo();
 			if (nInfo != null && nInfo.isConnected()) {
@@ -184,13 +186,29 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 			if (!success) {
 				throw new Exception(errorFromCode(FailureCodes.FAILED_TO_CONNECT));
 			}
-			boolean connected = pollForValidSSSID(10, ssid);
+			boolean connected = pollForValidSSSID(5, ssid);
 			if (!connected) {
 				throw new Exception(errorFromCode(FailureCodes.FAILED_TO_CONNECT));
 			}
 		} else {
 			throw new Exception(errorFromCode(FailureCodes.FAILED_TO_ADD_CONFIG));
 		}
+	}
+
+	private WifiConfiguration getExistingNetworkConfig(String ssid) {
+		WifiConfiguration existingNetworkConfigForSSID = null;
+		ArrayList<WifiConfiguration> configList = (ArrayList<WifiConfiguration>) wifiManager.getConfiguredNetworks();
+		String comparableSSID = ('"' + ssid + '"'); // Add quotes because wifiConfig.SSID has them
+		if (configList != null) {
+			for (WifiConfiguration wifiConfig : configList) {
+				if (wifiConfig.SSID.equals(comparableSSID)) {
+					Log.d("IoTWifi", "Found Matching Wifi: " + wifiConfig.toString());
+					existingNetworkConfigForSSID = wifiConfig;
+					break;
+				}
+			}
+		}
+		return existingNetworkConfigForSSID;
 	}
 
 	@Override
@@ -215,6 +233,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 		}
 	}
 
+	//Smart Link Connect
 	@ReactMethod
 	public void SL_Connect(String ssid, String pwd, Promise promise) {
 		if (mSmartLinker != null) {
@@ -234,11 +253,13 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 		}
 	}
 
+	//AP Connect
 	@ReactMethod
 	public void AP_Connect(String ssid, String pwd, Boolean apssid, Boolean appwd) {
 		//
 	}
 
+	//Smart Link Stop
 	@ReactMethod
 	public void SL_StopConnect(Promise promise) {
 		if (mSmartLinker != null) {
@@ -247,8 +268,14 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 		promise.resolve(true);
 	}
 
+	//AP Stop connect
 	@ReactMethod
-	public void isAvailableConnectWiFi(Promise promise) {
+	public void AP_StopConnect(Promise promise) {
+		promise.resolve(true);
+	}
+
+	@ReactMethod
+	public void IsAvailableConnectWiFi(Promise promise) {
 		promise.resolve(true);
 	}
 
@@ -261,7 +288,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 	@ReactMethod
 	public void Connect_WiFi(final String ssid, final Promise promise) {
 		if (Build.VERSION.SDK_INT > 28) {
-			promise.reject(null, "Not supported on Android Q");
+			promise.reject("Connect_WiFi", "Not supported on Android Q");
 		} else {
 			new Thread(new Runnable() {
 				@Override
@@ -270,7 +297,7 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 						connect_wifi_secure(ssid, "");
 						promise.resolve(true);
 					} catch (Exception err) {
-						promise.reject(null, err.getMessage());
+						promise.reject("Connect_WiFi", err.getMessage());
 					}
 				}
 			}).start();
@@ -295,5 +322,27 @@ public class SmartlinkModule extends ReactContextBaseJavaModule implements Lifec
 			}).start();
 		}
 
+	}
+
+	@ReactMethod
+	public void Remove_SSID(String ssid, Promise promise) {
+		boolean success;
+		WifiConfiguration existingNetworkConfigForSSID = getExistingNetworkConfig(ssid);
+
+		//No Config found
+		if (existingNetworkConfigForSSID == null) {
+			success = true;
+		} else if (existingNetworkConfigForSSID.networkId == -1) {
+			success = true;
+		} else {
+			int existingNetworkId = existingNetworkConfigForSSID.networkId;
+			success = wifiManager.removeNetwork(existingNetworkId) && wifiManager.saveConfiguration();
+		}
+		promise.resolve(success);
+	}
+
+	@ReactMethod
+	public void AP_ConfigWiFi(String ssid, String pwd, Promise promise) {
+		promise.resolve(true);
 	}
 }
